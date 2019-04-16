@@ -58,3 +58,19 @@ def somersd(score, target):
         sd.append((pct_target[i] + pct_target[i - 1]) * (pct_notarget[i] - pct_notarget[i - 1]));
     somersd = 1 - sum(sd);
     return (somersd);
+
+
+def anova_table(aov):
+    # https: // pythonfordatascience.org / anova - python /
+    aov['mean_sq'] = aov[:]['sum_sq'] / aov[:]['df']
+
+    aov['eta_sq'] = aov[:-1]['sum_sq'] / sum(aov['sum_sq'])
+
+    aov['omega_sq'] = (aov[:-1]['sum_sq'] - (aov[:-1]['df'] * aov['mean_sq'][-1])) / (
+                sum(aov['sum_sq']) + aov['mean_sq'][-1])
+
+    cols = ['sum_sq', 'df', 'mean_sq', 'F', 'PR(>F)', 'eta_sq', 'omega_sq']
+    aov = aov[cols]
+    return aov
+
+
