@@ -31,7 +31,6 @@ def cramers_v(x, y):
 
 
 def tavafoghi(input1, input2):
-    # TODO idont know what
     sklearn.metrics.cohen_kappa_score(input1, input2, labels=None, weights=None)
 
 
