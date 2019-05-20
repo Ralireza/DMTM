@@ -59,17 +59,23 @@ def somersd(score, target):
     return (somersd);
 
 
-def anova_table(aov):
-    # https: // pythonfordatascience.org / anova - python /
-    aov['mean_sq'] = aov[:]['sum_sq'] / aov[:]['df']
+def anova_table(data):
+    # https://www.marsja.se/four-ways-to-conduct-one-way-anovas-using-python/
+    N = len(data.values)  # conditions times participants
+    n = data.groupby('group').size()[0]
+    k = len(pd.unique(data.group))
 
-    aov['eta_sq'] = aov[:-1]['sum_sq'] / sum(aov['sum_sq'])
+    DFbetween = k - 1
+    DFwithin = N - k
+    DFtotal = N - 1
 
-    aov['omega_sq'] = (aov[:-1]['sum_sq'] - (aov[:-1]['df'] * aov['mean_sq'][-1])) / (
-                sum(aov['sum_sq']) + aov['mean_sq'][-1])
+    SSbetween = (sum(data.groupby('group').sum()['weight'] ** 2) / n) \
+                - (data['weight'].sum() ** 2) / N
+    sum_y_squared = sum([value ** 2 for value in data['weight'].values])
+    SSwithin = sum_y_squared - sum(data.groupby('group').sum()['weight'] ** 2) / n
+    SStotal = sum_y_squared - (data['weight'].sum() ** 2) / N
+    MSwithin = SSwithin / DFwithin
 
-    cols = ['sum_sq', 'df', 'mean_sq', 'F', 'PR(>F)', 'eta_sq', 'omega_sq']
-    aov = aov[cols]
-    return aov
-
-
+    eta_sqrd = SSbetween / SStotal
+    om_sqrd = (SSbetween - (DFbetween * MSwithin)) / (SStotal + MSwithin)
+    return eta_sqrd, om_sqrd
