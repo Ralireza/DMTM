@@ -13,7 +13,8 @@ def t_test(number_list1, number_list2):
     return ss.ttest_ind(number_list1, number_list2)
 
 
-def f_test(*args):
+def anova(*args):
+    # return f, p
     return ss.f_oneway(*args)
 
 
