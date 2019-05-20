@@ -90,3 +90,18 @@ def structural_equation_modeling(data, y, x, lam_x, lam_y, beta, gamma):
     # https: // github.com / inuyasha2012 / pypsy / blob / master / demo / demo_sem.py
     lam_x, lam_y, phi_x, beta, gamma, var_e, var_e_x, var_e_y = sem(data, y, x, lam_x, lam_y, beta, gamma)
     return lam_x, lam_y, phi_x, beta, gamma, var_e, var_e_x, var_e_y
+
+
+
+
+def payaii(itemscores):
+    itemvars = [st.variance(item) for item in itemscores]
+    tscores = [0] * len(itemscores[0])
+    for item in itemscores:
+        for i in range(len(item)):
+            tscores[i] += item[i]
+    nitems = len(itemscores)
+
+    Calpha = nitems / (nitems - 1.) * (1 - sum(itemvars) / st.variance(tscores))
+
+    return Calpha
