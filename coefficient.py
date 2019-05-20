@@ -3,6 +3,7 @@ from scipy import stats as ss
 import numpy as np
 import pandas as pd
 import sklearn
+from psy import sem
 
 
 def pearson_correlation(list_number1, list_number2):
@@ -59,8 +60,12 @@ def somersd(score, target):
     return (somersd);
 
 
-def anova_table(data):
+def anova_eta_omg(data):
     # https://www.marsja.se/four-ways-to-conduct-one-way-anovas-using-python/
+
+    # data shape : 3*30
+    # id , weight , group is col name :weight is float , group is 3 variety of string
+
     N = len(data.values)  # conditions times participants
     n = data.groupby('group').size()[0]
     k = len(pd.unique(data.group))
@@ -79,3 +84,9 @@ def anova_table(data):
     eta_sqrd = SSbetween / SStotal
     om_sqrd = (SSbetween - (DFbetween * MSwithin)) / (SStotal + MSwithin)
     return eta_sqrd, om_sqrd
+
+
+def structural_equation_modeling(data, y, x, lam_x, lam_y, beta, gamma):
+    # https: // github.com / inuyasha2012 / pypsy / blob / master / demo / demo_sem.py
+    lam_x, lam_y, phi_x, beta, gamma, var_e, var_e_x, var_e_y = sem(data, y, x, lam_x, lam_y, beta, gamma)
+    return lam_x, lam_y, phi_x, beta, gamma, var_e, var_e_x, var_e_y
