@@ -92,9 +92,11 @@ def structural_equation_modeling(data, y, x, lam_x, lam_y, beta, gamma):
     return lam_x, lam_y, phi_x, beta, gamma, var_e, var_e_x, var_e_y
 
 
-
-
 def payaii(itemscores):
+    # CronbachAlpha
+    # https://fa.wikipedia.org/wiki/%D8%A2%D8%B2%D9%85%D9%88%D9%86_%DA%A9%D8%B1%D9%88%D9%86%D8%A8%D8%A7%D8%AE_%D8%A2%D9%84%D9%81%D8%A7
+    # itemscores = [[4, 14, 3, 3, 23, 4, 52, 3, 33, 3], [5, 14, 4, 3, 24, 5, 55, 4, 15, 3]]
+
     itemvars = [st.variance(item) for item in itemscores]
     tscores = [0] * len(itemscores[0])
     for item in itemscores:
