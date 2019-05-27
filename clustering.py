@@ -4,8 +4,10 @@ from pandas import DataFrame
 from rpy2.robjects import DataFrame, FloatVector, IntVector
 from rpy2.robjects.packages import importr
 from math import isclose
+from kmodes.kmodes import KModes
+import numpy as np
 
-
+# TODO fix hyper-param in functions
 def kmeans(data, isfast):
     # Data = {
     #     'x': [25, 34, 22, 27, 33, 33, 31, 22, 35, 34, 67, 54, 57, 43, 50, 57, 59, 52, 65, 47, 49, 48, 35, 33, 44, 45,
@@ -30,6 +32,17 @@ def dbscan(data):
     #               [8, 7], [8, 8], [25, 80]])
     clustering = DBSCAN(eps=3, min_samples=2).fit(data)
     return clustering.labels_
+
+
+def kmode(data):
+    # kmode for categorical data
+
+    # random categorical data
+    data = np.random.choice(20, (100, 10))
+    km = KModes(n_clusters=4, init='Huang', n_init=5, verbose=1)
+
+    clusters = km.fit_predict(data)
+    return clusters
 
 
 def icc():
