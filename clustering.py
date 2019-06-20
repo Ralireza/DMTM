@@ -60,3 +60,5 @@ def icc():
 
     # check whether icc value equals reference value
     print(isclose(icc_val, 0.728, abs_tol=0.001))
+
+icc()

@@ -15,14 +15,14 @@ def imputation(number_list, missing_index, mode):
     elif mode is 'random':
         number_list[missing_index] = random.choice(number_list)
         return number_list
-    elif  mode is 'regression':
+    elif mode is 'regression':
         # TODO icant find any function
         return number_list
-    elif  mode is 'frequency':
+    elif mode is 'frequency':
         mode = df.mode(number_list)
         number_list[missing_index] = mode
         return number_list
-    elif  mode is 'mean':
+    elif mode is 'mean':
         mean = df.mean(number_list)
         number_list[missing_index] = mean
         return number_list

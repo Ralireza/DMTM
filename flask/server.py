@@ -31,10 +31,9 @@ def pearson():
         req_data = request.get_json()
         data_url = req_data['data_file']
         csv = pandas.read_csv(data_url)
-
-        # TODO dynamically or hardcoded column name ?
-        num_list1 = list(csv['Q1'])
-        num_list2 = list(csv['Q2.1'])
+        headers = csv.columns.values
+        num_list1 = list(csv[headers[0]])
+        num_list2 = list(csv[headers[0]])
 
         # delete outlyer by impute zero
         for i in range(len(num_list1)):
@@ -45,7 +44,8 @@ def pearson():
                 num_list2[i] = 0
         try:
 
-            result = coef.pearson_correlation(num_list1, num_list2)
+            correlation, p_value = coef.pearson_correlation(num_list1, num_list2)
+            result = {"correlation": correlation, "p_value": p_value}
         except KeyError and ValueError:
             result = "ERROR"
             pass
@@ -67,17 +67,14 @@ def mean():
         data_url = req_data['data_file']
         csv = pandas.read_csv('./files/sample.csv')
         num_list1 = csv['Q1']
-        num_list2 = csv['Q2.1']
         params = None
-        # TODO what is Best practice for a param exist or not & Error handling
         try:
             # Here are the optional json parameters inside a try
             params = req_data['parameters']
-            mean1 = df.trimmed_mean(num_list1, params['limit1'])
-            mean2 = df.trimmed_mean(num_list2, params['limit2'])
-            result = [mean1, mean2]
-        except KeyError and ValueError:
-            result = "ERROR"
+            mean1 = df.trimmed_mean(num_list1, params['limit'])
+            result = {"tmean": mean1}
+        except KeyError or ValueError:
+            result = {"error": "bad param or no param"}
             pass
         if params is None:
 
