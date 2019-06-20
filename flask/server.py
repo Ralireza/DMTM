@@ -66,7 +66,8 @@ def mean():
         req_data = request.get_json()
         data_url = req_data['data_file']
         csv = pandas.read_csv('./files/sample.csv')
-        num_list1 = csv['Q1']
+        headers = csv.columns.values
+        num_list1 = csv[headers[0]]
         params = None
         try:
             # Here are the optional json parameters inside a try
