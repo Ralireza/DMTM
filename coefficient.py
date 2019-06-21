@@ -107,3 +107,8 @@ def payaii(itemscores):
     Calpha = nitems / (nitems - 1.) * (1 - sum(itemvars) / st.variance(tscores))
 
     return Calpha
+
+
+def point_biserial(list_number1, list_number2):
+    rval, p_val = ss.pointbiserialr(list_number1, list_number2)
+    return rval,p_val
