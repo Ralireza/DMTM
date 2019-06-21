@@ -1,6 +1,7 @@
 import statistics as st
 from scipy import stats as ss
 import numpy as np
+import weighted
 
 
 def min(number_list):
@@ -25,6 +26,10 @@ def mode(number_list):
 
 def median(number_list):
     return st.mmedian(number_list)
+
+
+def wighted_median(number_list, w_list):
+    weighted.median(number_list, w_list)
 
 
 def variance(number_list):
@@ -53,6 +58,3 @@ def population_skewness(number_list):
 def kurtosis(number_list):
     # keshidegi
     return ss.kurtosis(number_list)
-
-
-

@@ -5,7 +5,6 @@ import pandas as pd
 import sklearn
 from psy import sem
 
-
 def pearson_correlation(list_number1, list_number2):
     return ss.pearsonr(list_number1, list_number2)
 
