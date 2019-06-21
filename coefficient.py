@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 import sklearn
 from psy import sem
+import math
+
 
 def pearson_correlation(list_number1, list_number2):
     return ss.pearsonr(list_number1, list_number2)
@@ -110,4 +112,32 @@ def payaii(itemscores):
 
 def point_biserial(list_number1, list_number2):
     rval, p_val = ss.pointbiserialr(list_number1, list_number2)
-    return rval,p_val
+    return rval, p_val
+
+
+def biserial(list_number1, list_number2, p1, p2, y):
+    # http://core.ecu.edu/psyc/wuenschk/docs30/Biserial.pdf
+    # biserial = rpb*sqrt(p1 * p2)/y
+    rpb, _ = point_biserial(list_number1, list_number2)
+    biserial = (rpb * math.sqrt(p1 * p2)) / y
+    return biserial
+
+
+def get_matrix_point_biserial(*args):
+    final_matrix = []
+    for item1 in args:
+        row = []
+        for item2 in args:
+            row.append(point_biserial(item1, item2))
+        final_matrix.append(row)
+    return final_matrix
+
+
+def get_matrix_biserial(p1, p2, y, *args):
+    final_matrix = []
+    for item1 in args:
+        row = []
+        for item2 in args:
+            row.append(biserial(item1, item2, p1, p2, y))
+        final_matrix.append(row)
+    return final_matrix
