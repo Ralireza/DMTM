@@ -46,7 +46,7 @@ def pearson():
 
             correlation, p_value = pearson_correlation(num_list1, num_list2)
             result = {"correlation": correlation, "p_value": p_value}
-        except KeyError or ValueError:
+        except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = 'dmtm_responses'
@@ -69,7 +69,8 @@ def mean():
     if request.method == 'POST':
         req_data = request.get_json()
         data_url = req_data['data_file']
-        csv = pandas.read_csv(current_path+data_url)
+        csv = pandas.read_csv(data_url)
+        print(current_path)
         headers = csv.columns.values
         num_list1 = csv[headers[0]]
         params = None
@@ -77,7 +78,7 @@ def mean():
             params = req_data['parameters']
             mean1 = trimmed_mean(num_list1, params['limit'])
             result = {"tmean": mean1}
-        except KeyError or ValueError:
+        except Exception :
             # result = {"error": "bad param or no param"}
             bad_request()
         if params is None:
