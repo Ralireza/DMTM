@@ -54,12 +54,12 @@ def frequency():
             # my_list2 = [1, 2, 8]
 
             for index, question in enumerate(num_list2):
-                dict = {"id": str(index),
+                dict = {"id": (index),
                         "relative": freq.relative_frequency(num_list1, question, True),
                         "absolute": freq.absolute_frequency(num_list1, question)}
                 result.append(dict)
 
-        except Exception:
+        except KeyError:
             bad_request()
         response_dir = current_path + '/dmtm_responses'
         if not os.path.exists(response_dir):
@@ -77,7 +77,6 @@ def frequency():
 
 
 # </editor-fold>
-
 
 @app.route("/api/v1/coefficient/pearson", methods=['GET', 'POST'])
 def pearson():
