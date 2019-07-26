@@ -5,6 +5,7 @@ import math
 import time
 import os
 from scipy import stats as ss
+import frequency as freq
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -23,6 +24,57 @@ def bad_request():
 
 
 app = Flask(__name__)
+
+
+# <editor-fold desc="frequency">
+@app.route("/api/v1/frequency", methods=['POST'])
+def frequency():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+            num_list1 = list(csv[headers[0]])
+            num_list2 = list(csv[headers[1]])
+
+            # delete outlier by impute zero
+            for i in range(len(num_list1)):
+                if math.isinf(num_list1[i]):
+                    num_list1[i] = 0
+            for i in range(len(num_list2)):
+                if math.isinf(num_list2[i]):
+                    num_list2[i] = 0
+            relative_freq = []
+            result=[]
+            my_list = [1, 1, 2, 2, 3, 3, 4, 4, 2, 2, 8, 8, 8, 8, 9]
+            my_list2 = [1, 2,8]
+
+            for index,question in enumerate(my_list2):
+                dict = {"id":index,
+                         "relative": freq.relative_frequency(my_list, question, True),
+                          "absolute": freq.absolute_frequency(my_list,question)}
+                result.append(dict)
+
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = 'dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+# </editor-fold>
 
 
 @app.route("/api/v1/coefficient/pearson", methods=['GET', 'POST'])
@@ -78,7 +130,7 @@ def mean():
             params = req_data['parameters']
             mean1 = trimmed_mean(num_list1, params['limit'])
             result = {"tmean": mean1}
-        except Exception :
+        except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         if params is None:
@@ -90,7 +142,7 @@ def mean():
             bad_request()
         else:
 
-            response_dir = current_path+'/dmtm_responses'
+            response_dir = current_path + '/dmtm_responses'
             if not os.path.exists(response_dir):
                 os.makedirs(response_dir)
             current_milli_time = lambda: int(round(time.time() * 1000))

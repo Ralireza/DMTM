@@ -16,7 +16,7 @@ def absolute_frequency(number_list, number):
 
 
 # my_list = [1, 2, 3, 4, 5, 6, 6, 6, 7, 8, 8, 8, 9, 10]
-my_list = [1,1,2,2,3,3]
-print(absolute_frequency(my_list, 2))
+my_list = [1,1,2,2,3,3,4,4,2,2,8,8,8,8,9]
+print(relative_frequency(my_list, 2,False))
 
 
