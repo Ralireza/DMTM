@@ -40,30 +40,32 @@ def frequency():
 
             # delete outlier by impute zero
             for i in range(len(num_list1)):
-                if math.isinf(num_list1[i]):
-                    num_list1[i] = 0
+                string_value = str(num_list1[i])
+                if string_value.isdigit():
+                    if math.isinf(float(num_list1[i])):
+                        num_list1[i] = 0
             for i in range(len(num_list2)):
-                if math.isinf(num_list2[i]):
-                    num_list2[i] = 0
-            relative_freq = []
-            result=[]
-            my_list = [1, 1, 2, 2, 3, 3, 4, 4, 2, 2, 8, 8, 8, 8, 9]
-            my_list2 = [1, 2,8]
+                string_value = str(num_list1[i])
+                if string_value.isdigit():
+                    if math.isinf(float(num_list2[i])):
+                        num_list2[i] = 0
+            result = []
+            # my_list = [1, 1, 2, 2, 3, 3, 4, 4, 2, 2, 8, 8, 8, 8, 9]
+            # my_list2 = [1, 2, 8]
 
-            for index,question in enumerate(my_list2):
-                dict = {"id":index,
-                         "relative": freq.relative_frequency(my_list, question, True),
-                          "absolute": freq.absolute_frequency(my_list,question)}
+            for index, question in enumerate(num_list2):
+                dict = {"id": str(index),
+                        "relative": freq.relative_frequency(num_list1, question, True),
+                        "absolute": freq.absolute_frequency(num_list1, question)}
                 result.append(dict)
 
         except Exception:
-            # result = {"error": "bad param or no param"}
             bad_request()
-        directory = 'dmtm_responses'
-        if not os.path.exists(directory):
-            os.makedirs(directory)
+        response_dir = current_path + '/dmtm_responses'
+        if not os.path.exists(response_dir):
+            os.makedirs(response_dir)
         current_milli_time = lambda: int(round(time.time() * 1000))
-        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        res_path = response_dir + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {

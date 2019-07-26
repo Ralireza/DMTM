@@ -20,4 +20,4 @@ motaghate
 start api doc
 -----------------------------------------------------------------------------------------------
 
-2 . frequency get 2 column : first all second porsesh
+2 . frequency get 2 column : first all second question => sample2.csv
