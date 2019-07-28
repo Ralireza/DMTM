@@ -20,4 +20,6 @@ motaghate
 start api doc
 -----------------------------------------------------------------------------------------------
 
-2 . frequency get 2 column : first all second question => sample2.csv
+2. frequency get 2 column : first all second question => sample2.csv
+3. ignored
+4.
