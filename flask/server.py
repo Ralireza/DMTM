@@ -401,7 +401,7 @@ def quantile():
             req_data = request.get_json()
             data_url = req_data['data_file']
             params = req_data['parameters']
-            q=params["q"]
+            q = params["q"]
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
             num_list1 = list(csv[headers[0]])
@@ -411,7 +411,75 @@ def quantile():
                 if math.isinf(float(num_list1[i])):
                     num_list1[i] = 0
 
-            result = {"quantile": df.quantile(num_list1,q)}
+            result = {"quantile": df.quantile(num_list1, q)}
+
+        except Exception:
+            bad_request()
+        response_dir = current_path + '/dmtm_responses'
+        if not os.path.exists(response_dir):
+            os.makedirs(response_dir)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+@app.route("/api/v1/desfeature/skewness", methods=['POST'])
+def population_skewness():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+            num_list1 = list(csv[headers[0]])
+
+            # delete outlier by impute zero
+            for i in range(len(num_list1)):
+                if math.isinf(float(num_list1[i])):
+                    num_list1[i] = 0
+
+            result = {"skewness": df.population_skewness(num_list1)}
+
+        except Exception:
+            bad_request()
+        response_dir = current_path + '/dmtm_responses'
+        if not os.path.exists(response_dir):
+            os.makedirs(response_dir)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+@app.route("/api/v1/desfeature/kurtosis", methods=['POST'])
+def kurtosis():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+            num_list1 = list(csv[headers[0]])
+
+            # delete outlier by impute zero
+            for i in range(len(num_list1)):
+                if math.isinf(float(num_list1[i])):
+                    num_list1[i] = 0
+
+            result = {"kurtosis": df.kurtosis(num_list1)}
 
         except Exception:
             bad_request()
