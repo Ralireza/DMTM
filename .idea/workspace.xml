@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5c3539f3-feff-4041-8dff-2e656a8c68f2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flask/descriptive_feature.py" beforeDir="false" afterPath="$PROJECT_DIR$/flask/descriptive_feature.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flask/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/flask/server.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,11 +34,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/flask/descriptive_feature.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="34" column="4" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
+            <state relative-caret-position="346">
+              <caret line="35" column="18" selection-start-line="35" selection-start-column="4" selection-end-line="35" selection-end-column="18" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -46,11 +46,15 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/flask/server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="8" selection-start-line="8" selection-end-line="8" />
+            <state relative-caret-position="323">
+              <caret line="344" column="42" lean-forward="true" selection-start-line="344" selection-start-column="42" selection-end-line="344" selection-end-column="42" />
+              <folding>
+                <element signature="e#0#48#0" expanded="true" />
+                <element signature="e#591#623#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -85,8 +89,8 @@
         <option value="$PROJECT_DIR$/flask/DOCUMENT.md" />
         <option value="$PROJECT_DIR$/flask/frequency.py" />
         <option value="$PROJECT_DIR$/log.txt" />
-        <option value="$PROJECT_DIR$/flask/server.py" />
         <option value="$PROJECT_DIR$/flask/descriptive_feature.py" />
+        <option value="$PROJECT_DIR$/flask/server.py" />
       </list>
     </option>
   </component>
@@ -149,7 +153,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.descriptive_feature">
+  <component name="RunManager" selected="Python.server">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="DMTM" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -284,8 +288,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.descriptive_feature" />
         <item itemvalue="Python.server" />
+        <item itemvalue="Python.descriptive_feature" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.clustering" />
       </list>
@@ -306,12 +310,12 @@
       <workItem from="1564146758373" duration="2333000" />
       <workItem from="1564315678579" duration="250000" />
       <workItem from="1564319155939" duration="4517000" />
-      <workItem from="1564327364112" duration="222000" />
+      <workItem from="1564327364112" duration="1256000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20494000" />
+    <option name="totallyTimeSpent" value="21528000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -331,13 +335,13 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286026" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.21084337" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.21084337" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32968238" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.2614458" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.2614458" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32891566" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
@@ -387,9 +391,9 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/DMTM$server.coverage" NAME="server Coverage Results" MODIFIED="1564326313541" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
+    <SUITE FILE_PATH="coverage/DMTM$server.coverage" NAME="server Coverage Results" MODIFIED="1564328789513" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
     <SUITE FILE_PATH="coverage/DMTM$frequency.coverage" NAME="frequency Coverage Results" MODIFIED="1564137973901" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
-    <SUITE FILE_PATH="coverage/DMTM$descriptive_feature.coverage" NAME="descriptive_feature Coverage Results" MODIFIED="1564327928016" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
+    <SUITE FILE_PATH="coverage/DMTM$descriptive_feature.coverage" NAME="descriptive_feature Coverage Results" MODIFIED="1564327979464" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$USER_HOME$/.local/lib/python3.6/site-packages/numpy/core/_methods.py" />
@@ -513,22 +517,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/flask/server.py">
+    <entry file="file://$PROJECT_DIR$/flask/descriptive_feature.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
+        <state relative-caret-position="346">
+          <caret line="35" column="18" selection-start-line="35" selection-start-column="4" selection-end-line="35" selection-end-column="18" />
           <folding>
-            <element signature="e#558#590#0" />
+            <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/flask/descriptive_feature.py">
+    <entry file="file://$PROJECT_DIR$/flask/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="34" column="4" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
+        <state relative-caret-position="323">
+          <caret line="344" column="42" lean-forward="true" selection-start-line="344" selection-start-column="42" selection-end-line="344" selection-end-column="42" />
           <folding>
-            <element signature="e#0#23#0" expanded="true" />
+            <element signature="e#0#48#0" expanded="true" />
+            <element signature="e#591#623#0" />
           </folding>
         </state>
       </provider>

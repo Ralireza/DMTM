@@ -326,6 +326,43 @@ def median():
         return resp
 
 
+@app.route("/api/v1/desfeature/wmedian", methods=['POST'])
+def wmedian():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+            num_list1 = list(csv[headers[0]])
+            num_list2 = list(csv[headers[1]])
+
+            # delete outlier by impute zero
+            for i in range(len(num_list1)):
+                if math.isinf(float(num_list1[i])):
+                    num_list1[i] = 0
+            for i in range(len(num_list2)):
+                if math.isinf(float(num_list2[i])):
+                    num_list2[i] = 0
+            result = {"wmedian": df.wighted_median(num_list1, num_list2)}
+
+        except Exception:
+            bad_request()
+        response_dir = current_path + '/dmtm_responses'
+        if not os.path.exists(response_dir):
+            os.makedirs(response_dir)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
 @app.route("/api/v1/desfeature/variance", methods=['POST'])
 def variance():
     if request.method == 'POST':
