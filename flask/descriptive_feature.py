@@ -29,7 +29,7 @@ def mode(number_list):
 
 
 def median(number_list):
-    return st.mmedian(number_list)
+    return st.median(number_list)
 
 
 def wighted_median(number_list, w_list):
