@@ -1,8 +1,7 @@
 import statistics as st
 from scipy import stats as ss
 import numpy as np
-
-
+import pandas as pd
 def min_num(number_list):
     return min(number_list)
 
@@ -33,7 +32,12 @@ def median(number_list):
 
 
 def wighted_median(number_list, w_list):
-    weighted.median(number_list, w_list)
+    df = pd.DataFrame({'numbers': number_list,'weights':w_list})
+    df.sort_values('numbers', inplace=True)
+    cumsum = df.weights.cumsum()
+    cutoff = df.weights.sum() / 2.0
+    median = df.numbers[cumsum >= cutoff].iloc[0]
+    return median
 
 
 def variance(number_list):
@@ -57,3 +61,4 @@ def population_skewness(number_list):
 def kurtosis(number_list):
     # keshidegi
     return ss.kurtosis(number_list)
+wighted_median([3,1,1,1,100],[2,2,2,2,20])
