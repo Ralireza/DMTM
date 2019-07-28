@@ -184,6 +184,81 @@ def range_domain():
         return resp
 
 
+@app.route("/api/v1/desfeature/mean", methods=['POST'])
+def mean():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+            num_list1 = list(csv[headers[0]])
+
+            # delete outlier by impute zero
+            for i in range(len(num_list1)):
+                if math.isinf(float(num_list1[i])):
+                    num_list1[i] = 0
+
+            result = {"mean": df.mean(num_list1)}
+
+        except Exception:
+            bad_request()
+        response_dir = current_path + '/dmtm_responses'
+        if not os.path.exists(response_dir):
+            os.makedirs(response_dir)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+@app.route("/api/v1/desfeature/tmean", methods=['GET', 'POST'])
+def mean2():
+    if request.method == 'POST':
+        req_data = request.get_json()
+        data_url = req_data['data_file']
+        csv = pandas.read_csv(data_url)
+        print(current_path)
+        headers = csv.columns.values
+        num_list1 = csv[headers[0]]
+        params = None
+        try:
+            params = req_data['parameters']
+            mean1 = trimmed_mean(num_list1, params['limit'])
+            result = {"tmean": mean1}
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        if params is None:
+
+            # data = {
+            #     'result_file': data_url,
+            #     'results': "need a parameter"
+            # }
+            bad_request()
+        else:
+
+            response_dir = current_path + '/dmtm_responses'
+            if not os.path.exists(response_dir):
+                os.makedirs(response_dir)
+            current_milli_time = lambda: int(round(time.time() * 1000))
+            res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+            with open(res_path, 'w') as outfile:
+                json.dump(result, outfile)
+            data = {
+                'result_file': res_path,
+                'results': result
+            }
+        resp = jsonify(data)
+        return resp
+
+
 # </editor-fold>
 
 @app.route("/api/v1/coefficient/pearson", methods=['GET', 'POST'])
@@ -221,47 +296,6 @@ def pearson():
             'result_file': res_path,
             'results': result
         }
-        resp = jsonify(data)
-        return resp
-
-
-@app.route("/api/v1/desfeature/tmean", methods=['GET', 'POST'])
-def mean():
-    if request.method == 'POST':
-        req_data = request.get_json()
-        data_url = req_data['data_file']
-        csv = pandas.read_csv(data_url)
-        print(current_path)
-        headers = csv.columns.values
-        num_list1 = csv[headers[0]]
-        params = None
-        try:
-            params = req_data['parameters']
-            mean1 = trimmed_mean(num_list1, params['limit'])
-            result = {"tmean": mean1}
-        except Exception:
-            # result = {"error": "bad param or no param"}
-            bad_request()
-        if params is None:
-
-            # data = {
-            #     'result_file': data_url,
-            #     'results': "need a parameter"
-            # }
-            bad_request()
-        else:
-
-            response_dir = current_path + '/dmtm_responses'
-            if not os.path.exists(response_dir):
-                os.makedirs(response_dir)
-            current_milli_time = lambda: int(round(time.time() * 1000))
-            res_path = response_dir + '/' + str(current_milli_time()) + '.json'
-            with open(res_path, 'w') as outfile:
-                json.dump(result, outfile)
-            data = {
-                'result_file': res_path,
-                'results': result
-            }
         resp = jsonify(data)
         return resp
 
