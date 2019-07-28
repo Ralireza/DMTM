@@ -2,12 +2,11 @@ import statistics as st
 from scipy import stats as ss
 import numpy as np
 
-
-def min(number_list):
+def min_num(number_list):
     return min(number_list)
 
 
-def max(number_list):
+def max_num(number_list):
     return max(number_list)
 
 
