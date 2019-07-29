@@ -8,16 +8,18 @@ import math
 
 
 def pearson_correlation(list_number1, list_number2):
-    return ss.pearsonr(list_number1, list_number2)
+    correlation, p_value=ss.pearsonr(list_number1, list_number2)
+    return correlation, p_value
 
 
 def spearman_correlation(list_number1, list_number2):
-    return ss.spearmanr(list_number1, list_number2)
+    correlation, p_value=ss.spearmanr(list_number1, list_number2)
+    return correlation, p_value
 
 
 def kendalltau_correlation(list_number1, list_number2):
-    tau, p_value = ss.kendalltau(list_number1, list_number2)
-    return tau, p_value
+    correlation, p_value = ss.kendalltau(list_number1, list_number2)
+    return correlation, p_value
 
 
 def cramers_v(x, y):
