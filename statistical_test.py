@@ -1,9 +1,5 @@
-import statistics as st
 from scipy import stats as ss
 import factor_analyzer as fa
-import numpy as np
-import pandas as pd
-import sklearn
 
 
 def chisquare_test(number_list):

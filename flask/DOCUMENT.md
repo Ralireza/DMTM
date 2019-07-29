@@ -719,3 +719,98 @@
 -   **Error Response:**
     
         400
+        
+        
+## RFP: 1-4:6
+### pearson
+
+<div dir="rtl">
+ضریب همبستگی پیرسون فایل اکسل که شامل دو ستون از اعداد است را محاسبه میکند .
+
+</div>
+
+-   **URL**
+
+    /api/v1/coefficient/pearson
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]
+              
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                        "correlation": -0.13827040287560155,
+                        "p_value": 1.1455692314984053e-65
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+       
+## RFP: 1-4:6
+### spearman
+
+<div dir="rtl">
+ضریب همبستگی اسپیرمن فایل اکسل که شامل دو ستون از اعداد است را محاسبه میکند .
+
+</div>
+
+-   **URL**
+
+    /api/v1/coefficient/spearman
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]
+              
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                        "correlation": -0.13827040287560155,
+                        "p_value": 1.1455692314984053e-65
+                    }
+                }
+
+-   **Error Response:**
+    
+        400

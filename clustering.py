@@ -7,6 +7,7 @@ from math import isclose
 from kmodes.kmodes import KModes
 import numpy as np
 
+
 # TODO fix hyper-param in functions
 def kmeans(data, isfast):
     # Data = {
@@ -60,5 +61,6 @@ def icc():
 
     # check whether icc value equals reference value
     print(isclose(icc_val, 0.728, abs_tol=0.001))
+
 
 icc()

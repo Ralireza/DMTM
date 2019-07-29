@@ -921,6 +921,44 @@ def point_biserial():
         return resp
 
 
+@app.route("/api/v1/coefficient/mpbiserial", methods=['POST'])
+def get_matrix_point_biserial():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+            lists = []
+            for l in headers:
+                lists.append(csv[l])
+
+            # delete outlier by impute zero
+            for l in lists:
+                for i in range(len(l)):
+                    if math.isinf(l[i]):
+                        l[i] = 0
+
+            mpbiserial = co.get_matrix_point_biserial(*lists)
+            result = {"mpbiserial": mpbiserial}
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
 @app.route("/api/v1/coefficient/biserial", methods=['POST'])
 def biserial():
     if request.method == 'POST':
@@ -946,6 +984,48 @@ def biserial():
 
             bserial = co.biserial(num_list1, num_list2, p1, p2, y)
             result = {"bserial": bserial}
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+@app.route("/api/v1/coefficient/mbiserial", methods=['POST'])
+def get_matrix_biserial():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            params = req_data['parameters']
+            p1 = params['p1']
+            p2 = params['p2']
+            y = params['y']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+            lists = []
+            for l in headers:
+                lists.append(csv[l])
+
+            # delete outlier by impute zero
+            for l in lists:
+                for i in range(len(l)):
+                    if math.isinf(l[i]):
+                        l[i] = 0
+
+            mpbiserial = co.get_matrix_biserial(p1, p2, y, *lists)
+            result = {"mbiserial": mpbiserial}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
