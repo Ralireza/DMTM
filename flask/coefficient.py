@@ -8,12 +8,12 @@ import math
 
 
 def pearson_correlation(list_number1, list_number2):
-    correlation, p_value=ss.pearsonr(list_number1, list_number2)
+    correlation, p_value = ss.pearsonr(list_number1, list_number2)
     return correlation, p_value
 
 
 def spearman_correlation(list_number1, list_number2):
-    correlation, p_value=ss.spearmanr(list_number1, list_number2)
+    correlation, p_value = ss.spearmanr(list_number1, list_number2)
     return correlation, p_value
 
 
@@ -23,7 +23,11 @@ def kendalltau_correlation(list_number1, list_number2):
 
 
 def cramers_v(x, y):
-    confusion_matrix = pd.crosstab(x, y)
+    index=[]
+    for i in range(15177):
+        index.append(i)
+    table = pd.DataFrame.from_records({'numbers1': x, 'numbers2': y} )
+    confusion_matrix = pd.crosstab(table.numbers1, table.numbers2)
     chi2 = ss.chi2_contingency(confusion_matrix)[0]
     n = confusion_matrix.sum().sum()
     phi2 = chi2 / n
