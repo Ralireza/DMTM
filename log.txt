@@ -23,4 +23,5 @@ start api doc
 2. frequency get 2 column : first all second question => sample2.csv
 3. ignored
 4. descriptive feature is separated from each other.
-
+5. its wmedian in 4 . yes?
+6.
