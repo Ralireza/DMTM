@@ -25,4 +25,5 @@ start api doc
 4. descriptive feature is separated from each other.
 5. its wmedian in 4 . yes?
 6. 2 column and response correlation and p_value. statistical test ?
-7.
+7. 2 column and response correlation and p_value. statistical test ?
+8. 1 column of data
