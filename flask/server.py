@@ -802,6 +802,7 @@ def anova_eta_omg():
         resp = jsonify(data)
         return resp
 
+
 # TODO
 @app.route("/api/v1/coefficient/sem", methods=['POST'])
 def structural_equation_modeling():
@@ -841,6 +842,7 @@ def structural_equation_modeling():
         resp = jsonify(data)
         return resp
 
+
 @app.route("/api/v1/coefficient/cronbachalpha", methods=['POST'])
 def cronbachalpha():
     if request.method == 'POST':
@@ -861,7 +863,7 @@ def cronbachalpha():
                     num_list2[i] = 0
 
             cronbachalpha = co.payaii(num_list1, num_list2)
-            result = {"correlation":cronbachalpha}
+            result = {"correlation": cronbachalpha}
         except KeyboardInterrupt:
             # result = {"error": "bad param or no param"}
             bad_request()
