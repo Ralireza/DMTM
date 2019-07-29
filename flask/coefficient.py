@@ -6,6 +6,8 @@ from sklearn import metrics
 from psy import sem
 import math
 
+import scipy.special as special
+
 
 def pearson_correlation(list_number1, list_number2):
     correlation, p_value = ss.pearsonr(list_number1, list_number2)
@@ -50,11 +52,9 @@ def somersd(list_number1, list_number2):
     return somerd
 
 
-def anova_eta_omg(data):
+def anova_eta_omg(numlist1, numlist2):
     # https://www.marsja.se/four-ways-to-conduct-one-way-anovas-using-python/
-
-    # data shape : 3*30
-    # id , weight , group is col name :weight is float , group is 3 variety of string
+    data = pd.DataFrame.from_records({'weight': numlist1, 'group': numlist2})
 
     N = len(data.values)  # conditions times participants
     n = data.groupby('group').size()[0]
@@ -62,7 +62,6 @@ def anova_eta_omg(data):
 
     DFbetween = k - 1
     DFwithin = N - k
-    DFtotal = N - 1
 
     SSbetween = (sum(data.groupby('group').sum()['weight'] ** 2) / n) \
                 - (data['weight'].sum() ** 2) / N
