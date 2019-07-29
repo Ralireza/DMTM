@@ -98,8 +98,8 @@ def payaii(list_number1, list_number2):
 
 
 def point_biserial(list_number1, list_number2):
-    rval, p_val = ss.pointbiserialr(list_number1, list_number2)
-    return rval, p_val
+    rval, pval = ss.pointbiserialr(list_number1, list_number2)
+    return rval, pval
 
 
 def biserial(list_number1, list_number2, p1, p2, y):
