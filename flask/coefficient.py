@@ -23,10 +23,10 @@ def kendalltau_correlation(list_number1, list_number2):
 
 
 def cramers_v(x, y):
-    index=[]
+    index = []
     for i in range(15177):
         index.append(i)
-    table = pd.DataFrame.from_records({'numbers1': x, 'numbers2': y} )
+    table = pd.DataFrame.from_records({'numbers1': x, 'numbers2': y})
     confusion_matrix = pd.crosstab(table.numbers1, table.numbers2)
     chi2 = ss.chi2_contingency(confusion_matrix)[0]
     n = confusion_matrix.sum().sum()
@@ -42,29 +42,12 @@ def tavafoghi(input1, input2):
     return metrics.cohen_kappa_score(input1, input2, labels=None, weights=None)
 
 
-def somersd(score, target):
-    score, target = (list(t) for t in zip(*sorted(zip(score, target))))
-    ttl_num = len(score)
-    bin = 20;
-    n = ttl_num / 20;
-    sum_target = sum(target);
-    sum_notarget = ttl_num - sum_target;
-    pct_target = [];
-    pct_notarget = [];
-    pct_target.append(0.0);
-    pct_notarget.append(0.0);
-    for i in range(1, bin):
-        if (i != bin):
-            pct_target.append((sum(target[0:(i * n - 1)]) + 0.0) / sum_target);
-            pct_notarget.append((i * n - sum(target[0:(i * n - 1)]) + 0.0) / sum_notarget)
-
-    pct_target.append(1.0);
-    pct_notarget.append(1.0);
-    sd = []
-    for i in range(1, bin + 1):
-        sd.append((pct_target[i] + pct_target[i - 1]) * (pct_notarget[i] - pct_notarget[i - 1]));
-    somersd = 1 - sum(sd);
-    return (somersd);
+def somersd(list_number1, list_number2):
+    # https://en.wikipedia.org/wiki/Somers'_D
+    corr1, p1 = kendalltau_correlation(list_number1, list_number2)
+    corr2, p2 = kendalltau_correlation(list_number1, list_number1)
+    somerd = corr1 / corr2
+    return somerd
 
 
 def anova_eta_omg(data):
