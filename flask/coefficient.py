@@ -2,7 +2,7 @@ import statistics as st
 from scipy import stats as ss
 import numpy as np
 import pandas as pd
-import sklearn
+from sklearn import metrics
 from psy import sem
 import math
 
@@ -39,7 +39,7 @@ def cramers_v(x, y):
 
 
 def tavafoghi(input1, input2):
-    sklearn.metrics.cohen_kappa_score(input1, input2, labels=None, weights=None)
+    return metrics.cohen_kappa_score(input1, input2, labels=None, weights=None)
 
 
 def somersd(score, target):
