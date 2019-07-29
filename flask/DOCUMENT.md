@@ -814,3 +814,520 @@
 -   **Error Response:**
     
         400
+        
+        
+## RFP: 1-4:6
+### kendall
+
+<div dir="rtl">
+ضریب همبستگی تاوکندال فایل اکسل که شامل دو ستون از اعداد است را محاسبه میکند .
+
+</div>
+
+-   **URL**
+
+    /api/v1/coefficient/kendall
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]
+              
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                        "correlation": -0.13827040287560155,
+                        "p_value": 1.1455692314984053e-65
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+        
+        
+## RFP: 1-4:7
+### cramers
+
+<div dir="rtl">
+ضریب همبستگی  کرامرز فایل اکسل که شامل دو ستون از اعداد است را محاسبه میکند .
+
+</div>
+
+-   **URL**
+
+    /api/v1/coefficient/cramers
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]
+              
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                         "correlation": 0.23054475849398492
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+
+## RFP: 1-4:7
+### tavafogh
+
+<div dir="rtl">
+ضریب همبستگی توافقی فایل اکسل که شامل دو ستون از اعداد است را محاسبه میکند .
+
+</div>
+
+-   **URL**
+
+    /api/v1/coefficient/tavafogh
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]
+              
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                         "correlation": -0.02430
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+        
+        
+## RFP: 1-4:7
+### somersd
+
+<div dir="rtl">
+ضریب همبستگی دی سامرز فایل اکسل که شامل دو ستون از اعداد است را محاسبه میکند .
+
+</div>
+
+-   **URL**
+
+    /api/v1/coefficient/somersd
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]
+              
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                         "correlation": -0.177522
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+       
+## RFP: 1-4:8
+### eta omga
+
+<div dir="rtl">
+ضریب اتا و امگا فایل اکسل که شامل دو ستون از اعداد است را محاسبه میکند .
+
+</div>
+
+-   **URL**
+
+    /api/v1/coefficient/etaomg
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]
+              
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                         "eta": 15.29170365615457,
+                         "omg": 15.311781551099397
+                    }
+                }
+
+-   **Error Response:**
+    
+        400  
+        
+             
+## RFP: 1-4:16.3
+### cronbachalpha
+
+<div dir="rtl">
+ضریب پایایی فایل اکسل که شامل دو ستون از اعداد است را محاسبه میکند .
+
+</div>
+
+-   **URL**
+
+    /api/v1/coefficient/cronbachalpha
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]
+              
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                         "correlation": -0.018211507452472908
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+
+
+
+## RFP: 1-4:16.4
+### point biserial
+
+<div dir="rtl">
+ضریب همبستگی دورشته ای نقطه ای فایل اکسل که شامل دو ستون از اعداد است را محاسبه میکند .
+
+</div>
+
+-   **URL**
+
+    /api/v1/coefficient/pbiserial
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]
+              
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                         "pval": 1.1455692314984053e-65,
+                         "rval": -0.13827040287560155
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+
+
+
+
+## RFP: 1-4:16.4
+### matrix point biserial
+
+<div dir="rtl">
+ضریب همبستگی چندرشته ای نقطه ای فایل اکسل که شامل دو تا چند  ستون از اعداد است را محاسبه میکند .
+
+</div>
+
+-   **URL**
+
+    /api/v1/coefficient/mpbiserial
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]
+              
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                        "mpbiserial": [
+                            [
+                                1.0,
+                                -0.13827040287560155
+                            ],
+                            [
+                                -0.13827040287560155,
+                                0.9999999999999982
+                            ]
+                        ]
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+
+
+## RFP: 1-4:16.4
+### biserial
+
+<div dir="rtl">
+ضریب همبستگی دورشته ای  فایل اکسل که شامل دو   ستون از اعداد است را محاسبه میکند .پارامتر های ورودی نیز مربوط به فرمول هستند و باید از کاربر گرفته شود و محدودیت خاصی ندارند.
+
+</div>
+
+-   **URL**
+
+    /api/v1/coefficient/biserial
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string],
+                "parameters":{
+                    "p1":[float],
+                    "p2":[float],
+                    "y":[float]
+                }
+              
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv",
+            "parameters":{
+                "p1":1,
+                "p2":2,
+                "y":4
+            }   
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                        "bserial": -0.04888596975536688
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+
+
+
+
+## RFP: 1-4:16.4
+### matrix biserial
+
+<div dir="rtl">
+ضریب همبستگی چندرشته ای  فایل اکسل که شامل دو   ستون از اعداد است را محاسبه میکند .پارامتر های ورودی نیز مربوط به فرمول هستند و باید از کاربر گرفته شود و محدودیت خاصی ندارند.
+
+</div>
+
+-   **URL**
+
+    /api/v1/coefficient/mbiserial
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string],
+                "parameters":{
+                    "p1":[float],
+                    "p2":[float],
+                    "y":[float]
+                }
+              
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv",
+            "parameters":{
+                "p1":1,
+                "p2":2,
+                "y":4
+            }   
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                        "mbiserial": [
+                            [
+                                0.3535533905932738,
+                                -0.04888596975536688
+                            ],
+                            [
+                                -0.04888596975536688,
+                                0.3535533905932732
+                            ]
+                        ]
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+
+
+
