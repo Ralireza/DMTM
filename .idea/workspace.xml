@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5c3539f3-feff-4041-8dff-2e656a8c68f2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/clustering.py" beforeDir="false" afterPath="$PROJECT_DIR$/clustering.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flask/DOCUMENT.md" beforeDir="false" afterPath="$PROJECT_DIR$/flask/DOCUMENT.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flask/coefficient.py" beforeDir="false" afterPath="$PROJECT_DIR$/flask/coefficient.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flask/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/flask/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imputation.py" beforeDir="false" afterPath="$PROJECT_DIR$/imputation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/statistical_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/statistical_test.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,11 +12,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/flask/server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
-              <caret line="532" column="39" lean-forward="true" selection-start-line="532" selection-start-column="20" selection-end-line="532" selection-end-column="39" />
+            <state relative-caret-position="-10">
+              <caret line="961" column="40" selection-start-line="961" selection-start-column="32" selection-end-line="961" selection-end-column="40" />
               <folding>
                 <element signature="e#0#48#0" expanded="true" />
                 <element signature="e#343#375#0" />
@@ -31,12 +26,12 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/flask/DOCUMENT.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="157">
-                <caret line="769" column="6" lean-forward="true" selection-start-line="769" selection-start-column="6" selection-end-line="769" selection-end-column="6" />
+              <first_editor relative-caret-position="322">
+                <caret line="1211" column="45" selection-start-line="1211" selection-start-column="45" selection-end-line="1211" selection-end-column="45" />
               </first_editor>
               <second_editor />
             </state>
@@ -72,10 +67,10 @@
         <option value="$PROJECT_DIR$/flask/files/sample3.csv" />
         <option value="$PROJECT_DIR$/log.txt" />
         <option value="$PROJECT_DIR$/flask/coefficient.py" />
-        <option value="$PROJECT_DIR$/flask/server.py" />
         <option value="$PROJECT_DIR$/imputation.py" />
         <option value="$PROJECT_DIR$/clustering.py" />
         <option value="$PROJECT_DIR$/statistical_test.py" />
+        <option value="$PROJECT_DIR$/flask/server.py" />
         <option value="$PROJECT_DIR$/flask/DOCUMENT.md" />
       </list>
     </option>
@@ -328,12 +323,12 @@
       <workItem from="1564315678579" duration="250000" />
       <workItem from="1564319155939" duration="4517000" />
       <workItem from="1564327364112" duration="4272000" />
-      <workItem from="1564386533361" duration="10822000" />
+      <workItem from="1564386533361" duration="11956000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35366000" />
+    <option name="totallyTimeSpent" value="36500000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -409,7 +404,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/DMTM$server.coverage" NAME="server Coverage Results" MODIFIED="1564407975755" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
+    <SUITE FILE_PATH="coverage/DMTM$server.coverage" NAME="server Coverage Results" MODIFIED="1564408876996" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
     <SUITE FILE_PATH="coverage/DMTM$frequency.coverage" NAME="frequency Coverage Results" MODIFIED="1564137973901" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
     <SUITE FILE_PATH="coverage/DMTM$descriptive_feature.coverage" NAME="descriptive_feature Coverage Results" MODIFIED="1564327979464" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
     <SUITE FILE_PATH="coverage/DMTM$nb.coverage" NAME="nb Coverage Results" MODIFIED="1564399312062" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.." />
@@ -589,25 +584,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/flask/DOCUMENT.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="322">
+            <caret line="1211" column="45" selection-start-line="1211" selection-start-column="45" selection-end-line="1211" selection-end-column="45" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/flask/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="532" column="39" lean-forward="true" selection-start-line="532" selection-start-column="20" selection-end-line="532" selection-end-column="39" />
+        <state relative-caret-position="-10">
+          <caret line="961" column="40" selection-start-line="961" selection-start-column="32" selection-end-line="961" selection-end-column="40" />
           <folding>
             <element signature="e#0#48#0" expanded="true" />
             <element signature="e#343#375#0" />
             <element signature="e#2279#2321#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/flask/DOCUMENT.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="157">
-            <caret line="769" column="6" lean-forward="true" selection-start-line="769" selection-start-column="6" selection-end-line="769" selection-end-column="6" />
-          </first_editor>
-          <second_editor />
         </state>
       </provider>
     </entry>
