@@ -27,4 +27,4 @@ start api doc
 6. 2 column and response correlation and p_value. statistical test ?
 7. 2 column and response correlation and p_value. statistical test ?
 8. 2 column weight and group and response eta , omg
-
+10. 

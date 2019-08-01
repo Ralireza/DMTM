@@ -1331,3 +1331,326 @@
 
 
 
+## RFP: 1-4:10
+### chisquare test
+
+<div dir="rtl">
+آزمون آماری خی دو فایل اکسل که شامل یک ستون از اعداد است را محاسبه میکند .
+</div>
+
+-   **URL**
+
+    /api/v1/test/chisquare
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]           
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                       "chsq": 647854.0570438602,
+                       "pval": 0.0
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+
+
+## RFP: 1-4:10
+### t test
+
+<div dir="rtl">
+آزمون آماری تی  فایل اکسل که شامل یک ستون از اعداد است را محاسبه میکند .
+</div>
+
+-   **URL**
+
+    /api/v1/test/t
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]           
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                       "t": 118.667875473242,
+                       "pval": 0.0
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+
+## RFP: 1-4:10
+### f test
+
+<div dir="rtl">
+آزمون آماری اف  فایل اکسل که شامل تعدادی دلخواه ستون از اعداد است را محاسبه میکند .
+</div>
+
+-   **URL**
+
+    /api/v1/test/anova
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]           
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                       "fval": 118.667875473242,
+                       "pval": 0.0
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+
+
+## RFP: 1-4:10
+### kruskal test
+
+<div dir="rtl">
+آزمون آماری کروسکال والیس  فایل اکسل که شامل تعدادی دلخواه ستون از اعداد است را محاسبه میکند .
+</div>
+
+-   **URL**
+
+    /api/v1/test/kruskal
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]           
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                       "krusk": 5458.714,
+                       "pval": 0.0
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+
+
+## RFP: 1-4:10
+### mannwhitney test
+
+<div dir="rtl">
+آزمون آماری من ویتنی  فایل اکسل که شامل دو ستون از اعداد است را محاسبه میکند .
+</div>
+
+-   **URL**
+
+    /api/v1/test/manwhit
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]           
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                       "manwhit": 59213220,
+                       "pval": 0.0
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+
+
+## RFP: 1-4:10
+### median test
+
+<div dir="rtl">
+آزمون آماری میانه والیس  فایل اکسل که شامل تعدادی دلخواه ستون از اعداد است را محاسبه میکند .
+</div>
+
+-   **URL**
+
+    /api/v1/test/median
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]           
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                       "median": 6512.815904,
+                       "pval": 0.0
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+
+
+
+## RFP: 1-4:10
+### normal test
+
+<div dir="rtl">
+آزمون آماری نرمال  فایل اکسل که شامل یک  ستون از اعداد است را محاسبه میکند .
+</div>
+
+-   **URL**
+
+    /api/v1/test/normal
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]           
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                       "normal": 4196.5560711,
+                       "pval": 0.0
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+
+
+
