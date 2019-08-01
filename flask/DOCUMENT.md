@@ -1745,3 +1745,129 @@
 
 
 
+## RFP: 1-4:16.2
+### exploratory factor analyzer 
+
+<div dir="rtl">
+تحلیل عاملی اکتشافی  فایل اکسل که شامل تعدادی دلخواه  ستون از اعداد است را محاسبه میکند .
+</div>
+
+-   **URL**
+
+    /api/v1/test/efa
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]           
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                        "communalities": [
+                            0.1382704086130894,
+                            0.13827040843962485
+                        ],
+                        "loadings": [
+                            0.37184728826187724,
+                            5.315428264315876e-05,
+                            -0.3718472880286302,
+                            5.315428267650063e-05
+                        ]
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+
+
+
+## RFP: 1-4:16.2
+### confirmatory factor analyzer 
+
+<div dir="rtl">
+تحلیل عاملی تحلیلی  فایل اکسل که شامل تعدادی دلخواه  ستون از اعداد است را محاسبه میکند .
+</div>
+
+-   **URL**
+
+    /api/v1/test/cfa
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]           
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                        "loadings": [
+                            2.935052899285504,
+                            2.9350529129473486,
+                            6.879576271701552,
+                            6.879576271701552
+                        ],
+                        "trans": [
+                            -0.18217654836379416,
+                            -0.18217654767021113,
+                            -0.18938895522051263,
+                            -0.1893889544994705,
+                            -0.4608506760520243,
+                            -0.4608506742974724,
+                            0.5072963640000627,
+                            0.5072963620686827,
+                            -0.04283948451967909,
+                            -0.042839484356580484,
+                            0.36795930015594763,
+                            0.36795929875505207
+                        ],
+                        "varcovs": [
+                            1.0,
+                            0.1502351511622517,
+                            0.1502351511622517,
+                            1.0
+                        ]
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+
+
+

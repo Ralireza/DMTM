@@ -2,6 +2,7 @@ from scipy import stats as ss
 import factor_analyzer as fa
 import math
 
+
 def chisquare_test(number_list):
     chsq, pval = ss.chisquare(number_list)
 
@@ -44,18 +45,18 @@ def korvit(data):
     # https://www.datacamp.com/community/tutorials/introduction-factor-analysis
     chi_square_value, p_value = fa.factor_analyzer.calculate_bartlett_sphericity(data)
     if math.isnan(chi_square_value):
-        chi_square_value=0
+        chi_square_value = 0
     if math.isnan(p_value):
-        p_value=0
+        p_value = 0
     return chi_square_value, p_value
 
 
 def kmo(data):
     kmo_all, kmo_model = fa.factor_analyzer.calculate_kmo(data)
     if kmo_all is None:
-        kmo_all=0
+        kmo_all = 0
     if kmo_model is None:
-        kmo_model=0
+        kmo_model = 0
     return kmo_all, kmo_model
 
 
@@ -66,15 +67,16 @@ def exploratory_factor_analyzer(data_feature):
     return factora.loadings_, factora.get_communalities()
 
 
-def confirmatory_factor_analyzer(data_feature, model_dict):
+def confirmatory_factor_analyzer(data_feature):
     # https://pypi.org/project/factor-analyzer/
     # data_featur is matrix that colomn are faeturename
-    # model_dict = {"F1": ["V1", "V2", "V3", "V4"],
-    #                  "F2": ["V5", "V6", "V7", "V8"]}
+    # model_dict = {"d": ["s","group","group"],
+    #               "s": ["group"]}
     factora = fa.FactorAnalyzer(rotation=None)
-    model_spec = fa.ModelSpecificationParser.parse_model_specification_from_dict(data_feature, model_dict)
+    model_spec = fa.ModelSpecificationParser.parse_model_specification_from_dict(data_feature)
     cfa = fa.ConfirmatoryFactorAnalyzer(model_spec, disp=False)
     cfa.fit(data_feature.values)
 
     factora.fit(data_feature)
-    return cfa.loadings_, cfa.factor_varcovs_, cfa.transform(data_feature.values)
+    loadings, varcovs, trans = cfa.loadings_, cfa.factor_varcovs_, cfa.transform(data_feature.values)
+    return loadings, varcovs, trans

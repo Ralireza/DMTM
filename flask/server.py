@@ -9,6 +9,7 @@ import frequency as freq
 import descriptive_feature as df
 import coefficient as co
 import statistical_test as stt
+import numpy as np
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -1361,6 +1362,95 @@ def kmo():
 
             kmo_all, kmo_model = stt.kmo(csv)
             result = {"kmo": kmo_model}
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+@app.route("/api/v1/test/efa", methods=['POST'])
+def exploratory_factor_analyzer():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+
+            lists = []
+            for l in headers:
+                lists.append(csv[l])
+
+            # delete outlier by impute zero
+            for l in lists:
+                for i in range(len(l)):
+                    if math.isinf(l[i]):
+                        l[i] = 0
+
+            loadings, communalities = stt.exploratory_factor_analyzer(csv)
+            loads = []
+            for row in loadings:
+                for num in row:
+                    loads.append(num)
+
+            result = {"loadings": loads
+                , "communalities": list(communalities)}
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+@app.route("/api/v1/test/cfa", methods=['POST'])
+def confirmatory_factor_analyzer():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+
+            lists = []
+            for l in headers:
+                lists.append(csv[l])
+
+            # delete outlier by impute zero
+            for l in lists:
+                for i in range(len(l)):
+                    if math.isinf(l[i]):
+                        l[i] = 0
+
+            loadings, varcovs, trans = stt.confirmatory_factor_analyzer(csv)
+
+            varcovs = np.array(varcovs).flatten()
+            trans = np.array(trans).flatten()
+            loadings = np.array(loadings).flatten()
+
+            result = {"loadings": loadings.tolist(), "trans": trans.tolist(), "varcovs": varcovs.tolist()}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
