@@ -30,3 +30,4 @@ start api doc
 16.3 , 16.4 in coefficients
 10. is DONE!
 17. is done in tests
+16.2 is done in tests
