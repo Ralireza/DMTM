@@ -1255,7 +1255,7 @@ def mediantest():
                     if math.isinf(l[i]):
                         l[i] = 0
 
-            median, pval, m, table= stt.median_test(*lists)
+            median, pval, m, table = stt.median_test(*lists)
             result = {"median": median, "pval": pval}
         except Exception:
             # result = {"error": "bad param or no param"}
@@ -1293,8 +1293,74 @@ def normalt():
                     if math.isinf(l[i]):
                         l[i] = 0
 
-            normal, pval= stt.normal_test(lists[0])
+            normal, pval = stt.normal_test(lists[0])
             result = {"normal": normal, "pval": pval}
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+@app.route("/api/v1/test/korvit", methods=['POST'])
+def korvit():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+            chi_square_value, p_value = stt.korvit(csv)
+            result = {"chival": chi_square_value, "pval": p_value}
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+@app.route("/api/v1/test/kmo", methods=['POST'])
+def kmo():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+
+            lists = []
+            for l in headers:
+                lists.append(csv[l])
+
+            # delete outlier by impute zero
+            for l in lists:
+                for i in range(len(l)):
+                    if math.isinf(l[i]):
+                        l[i] = 0
+
+            kmo_all, kmo_model = stt.kmo(csv)
+            result = {"kmo": kmo_model}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
