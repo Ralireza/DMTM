@@ -3,32 +3,39 @@ import factor_analyzer as fa
 
 
 def chisquare_test(number_list):
-    return ss.chisquare(number_list)
+    chsq, pval = ss.chisquare(number_list)
+
+    return chsq, pval
 
 
 def t_test(number_list1, number_list2):
-    return ss.ttest_ind(number_list1, number_list2)
+    t, pval = ss.ttest_ind(number_list1, number_list2)
+    return t, pval
 
 
 def anova(*args):
-    # return f, p
-    return ss.f_oneway(*args)
+    fval, pval = ss.f_oneway(*args)
+    return fval, pval
 
 
 def kruskal_test(*args):
-    return ss.kruskal(*args)
+    krusk, pval = ss.kruskal(*args)
+    return krusk, pval
 
 
 def mannwhitney_test(number_list1, number_list2):
-    return ss.mannwhitneyu(number_list1, number_list2)
+    manwhit, pval = ss.mannwhitneyu(number_list1, number_list2)
+    return manwhit, pval
 
 
 def median_test(*args):
-    return ss.median_test(*args)
+    median, pval, m, table = ss.median_test(*args)
+    return median, pval, m, table
 
 
 def normal_test(number_list):
-    return ss.normaltest(number_list)
+    normal, pval = ss.normaltest(number_list)
+    return normal, pval
 
 
 def sphericity(data):

@@ -8,6 +8,7 @@ from scipy import stats as ss
 import frequency as freq
 import descriptive_feature as df
 import coefficient as co
+import statistical_test as stt
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -1046,6 +1047,273 @@ def get_matrix_biserial():
 
 # </editor-fold>
 
+# <editor-fold desc="tests">
+
+@app.route("/api/v1/test/chisquare", methods=['POST'])
+def chisquare_test():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+            num_list1 = list(csv[headers[0]])
+
+            # delete outlier by impute zero
+            for i in range(len(num_list1)):
+                if math.isinf(num_list1[i]):
+                    num_list1[i] = 0
+
+            chsq, pval = stt.chisquare_test(num_list1)
+            result = {"chsq": chsq, "pval": pval}
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+@app.route("/api/v1/test/t", methods=['POST'])
+def t():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+            num_list1 = list(csv[headers[0]])
+            num_list2 = list(csv[headers[1]])
+
+            # delete outlier by impute zero
+            for i in range(len(num_list1)):
+                if math.isinf(num_list1[i]):
+                    num_list1[i] = 0
+            for i in range(len(num_list2)):
+                if math.isinf(num_list2[i]):
+                    num_list2[i] = 0
+
+            t, pval = stt.t_test(num_list1, num_list2)
+            result = {"t": t, "pval": pval}
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+@app.route("/api/v1/test/anova", methods=['POST'])
+def anova():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+            lists = []
+            for l in headers:
+                lists.append(csv[l])
+
+            # delete outlier by impute zero
+            for l in lists:
+                for i in range(len(l)):
+                    if math.isinf(l[i]):
+                        l[i] = 0
+
+            fval, pval = stt.anova(*lists)
+            result = {"fval": fval, "pval": pval}
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+@app.route("/api/v1/test/kruskal", methods=['POST'])
+def kruskal():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+            lists = []
+            for l in headers:
+                lists.append(csv[l])
+
+            # delete outlier by impute zero
+            for l in lists:
+                for i in range(len(l)):
+                    if math.isinf(l[i]):
+                        l[i] = 0
+
+            krusk, pval = stt.kruskal_test(*lists)
+            result = {"krusk": krusk, "pval": pval}
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+@app.route("/api/v1/test/manwhit", methods=['POST'])
+def mannwhitney_test():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+            lists = []
+            for l in headers:
+                lists.append(csv[l])
+
+            # delete outlier by impute zero
+            for l in lists:
+                for i in range(len(l)):
+                    if math.isinf(l[i]):
+                        l[i] = 0
+
+            manwhit, pval = stt.mannwhitney_test(*lists)
+            result = {"manwhit": manwhit, "pval": pval}
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+@app.route("/api/v1/test/median", methods=['POST'])
+def mediantest():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+            lists = []
+            for l in headers:
+                lists.append(csv[l])
+
+            # delete outlier by impute zero
+            for l in lists:
+                for i in range(len(l)):
+                    if math.isinf(l[i]):
+                        l[i] = 0
+
+            median, pval, m, table= stt.median_test(*lists)
+            result = {"median": median, "pval": pval}
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+@app.route("/api/v1/test/normal", methods=['POST'])
+def normalt():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+            lists = []
+            for l in headers:
+                lists.append(csv[l])
+
+            # delete outlier by impute zero
+            for l in lists:
+                for i in range(len(l)):
+                    if math.isinf(l[i]):
+                        l[i] = 0
+
+            normal, pval= stt.normal_test(lists[0])
+            result = {"normal": normal, "pval": pval}
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+# </editor-fold>
 
 if __name__ == '__main__':
     app.run()
