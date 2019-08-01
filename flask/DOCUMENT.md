@@ -1607,7 +1607,7 @@
 
 
 
-## RFP: 1-4:10
+## RFP: 1-4:17
 ### normal test
 
 <div dir="rtl">
@@ -1645,6 +1645,97 @@
                     { 
                        "normal": 4196.5560711,
                        "pval": 0.0
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+
+
+## RFP: 1-4:16.2
+### korvit test
+
+<div dir="rtl">
+آزمون آماری کرویت  فایل اکسل که شامل تعدادی دلخواه  ستون از اعداد است را محاسبه میکند .
+</div>
+
+-   **URL**
+
+    /api/v1/test/korvit
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]           
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample3.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                       "chival": 2.5464201254704735,
+                       "pval": 0.06998370525047698
+                    }
+                }
+
+-   **Error Response:**
+    
+        400
+
+
+## RFP: 1-4:16.2
+### kmo test
+
+<div dir="rtl">
+آزمون آماری kmo  فایل اکسل که شامل تعدادی دلخواه  ستون از اعداد است را محاسبه میکند .
+</div>
+
+-   **URL**
+
+    /api/v1/test/kmo
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string]           
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv"
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json",
+                    "results":
+                    { 
+                       "kmo": 0.4999670
                     }
                 }
 

@@ -1,6 +1,6 @@
 from scipy import stats as ss
 import factor_analyzer as fa
-
+import math
 
 def chisquare_test(number_list):
     chsq, pval = ss.chisquare(number_list)
@@ -38,16 +38,24 @@ def normal_test(number_list):
     return normal, pval
 
 
-def sphericity(data):
+def korvit(data):
     # korvit
     # data is matrix
     # https://www.datacamp.com/community/tutorials/introduction-factor-analysis
-    chi_square_value, p_value = fa.calculate_bartlett_sphericity(data)
+    chi_square_value, p_value = fa.factor_analyzer.calculate_bartlett_sphericity(data)
+    if math.isnan(chi_square_value):
+        chi_square_value=0
+    if math.isnan(p_value):
+        p_value=0
     return chi_square_value, p_value
 
 
 def kmo(data):
-    kmo_all, kmo_model = fa.calculate_kmo(data)
+    kmo_all, kmo_model = fa.factor_analyzer.calculate_kmo(data)
+    if kmo_all is None:
+        kmo_all=0
+    if kmo_model is None:
+        kmo_model=0
     return kmo_all, kmo_model
 
 
