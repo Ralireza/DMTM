@@ -1875,7 +1875,7 @@
 ### kmeans clustering 
 
 <div dir="rtl">
-خوشه بندی به روش کمینز است که فایل اکسل که دارای دو ستون که ستون اول دیتا و ستون دوم برچسب آنهاست میباشد .<br>
+خوشه بندی به روش کمینز است که فایل اکسل که دارای تعداد ستون دلخواه که هر ستون یک بعد از داده ها میباشد .<br>
 ncluster <br>
 مشخص میکند که چه تعداد خوشه میخواهیم.<br>
 isfast<br>
@@ -1909,6 +1909,55 @@ isfast<br>
               "isfast": 0,
               "ncluster":3
               }     
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json"
+                }
+
+-   **Error Response:**
+    
+        400
+
+
+## RFP: 1-4: 18
+### dbscan clustering 
+
+<div dir="rtl">
+خوشه بندی به روش دی بی اسکن است که فایل اکسل که دارای تعداد ستون دلخواه که هر ستون یک بعد از داده ها میباشد .<br>
+
+
+-   **URL**
+
+    /api/v1/clustering/dbscan
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string],
+              "parameters":{
+                  "minsample":[int],
+                  "eps":[int]
+              }         
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv",
+            "parameters":{
+                "minsample":4,
+                "eps":3
+                }   
         }
 
 -   **Success Response:**
