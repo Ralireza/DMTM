@@ -1871,3 +1871,58 @@
 
 
 
+## RFP: 1-4: 18
+### kmeans clustering 
+
+<div dir="rtl">
+خوشه بندی به روش کمینز است که فایل اکسل که دارای دو ستون که ستون اول دیتا و ستون دوم برچسب آنهاست میباشد .<br>
+ncluster <br>
+مشخص میکند که چه تعداد خوشه میخواهیم.<br>
+isfast<br>
+این پارامتر که یا صفر است و یا یک مشخص میکند که الگوریتم fastkmeans<br>
+هست یا خیر .
+</div>
+
+-   **URL**
+
+    /api/v1/clustering/kmeans
+
+-   **Method:**
+
+    `POST`
+
+-   **Data Params**
+
+          {
+              "data_file": [string],
+              "parameters":{
+              "isfast": 0 | 1 ,
+              "ncluster":[int]
+              }         
+          }
+
+-   **Example**
+
+        {
+            "data_file": "/Users/a/project/DMTM/flask/files/sample.csv",
+            "parameters":{
+              "isfast": 0,
+              "ncluster":3
+              }     
+        }
+
+-   **Success Response:**
+
+    -   **Code:** 200
+    -   **Content:**
+
+                {
+                    "result_file": "/Users/a/project/DMTM/flask/dmtm_responses/1564146791027.json"
+                }
+
+-   **Error Response:**
+    
+        400
+
+
+

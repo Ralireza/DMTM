@@ -4,11 +4,11 @@ import json
 import math
 import time
 import os
-from scipy import stats as ss
 import frequency as freq
 import descriptive_feature as df
 import coefficient as co
 import statistical_test as stt
+import clustering as cls
 import numpy as np
 
 current_path = os.path.dirname(os.path.abspath(__file__))
@@ -1464,6 +1464,53 @@ def confirmatory_factor_analyzer():
         data = {
             'result_file': res_path,
             'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+# </editor-fold>
+
+# <editor-fold desc="clustering">
+@app.route("/api/v1/clustering/kmeans", methods=['POST'])
+def kmeans():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            parameter=req_data['parameters']
+            isfast=parameter['isfast']
+            ncluster=parameter['ncluster']
+            csv = pandas.read_csv(data_url)
+            headers = csv.columns.values
+
+            lists = []
+            for l in headers:
+                lists.append(csv[l])
+
+            # delete outlier by impute zero
+            for l in lists:
+                for i in range(len(l)):
+                    if math.isinf(l[i]):
+                        l[i] = 0
+
+            data = {"x": lists[0], "y": lists[1]}
+            labels = cls.kmeans(data, ncluster,isfast)
+            labels=np.array(labels).T.tolist()
+            result = {"labels": labels}
+
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path
         }
         resp = jsonify(data)
         return resp
