@@ -8,29 +8,25 @@ from kmodes.kmodes import KModes
 import numpy as np
 
 
-# TODO fix hyper-param in functions
 def kmeans(data, ncluster, isfast):
-
     # if isfast is tru fastkmeans called
 
-    df = DataFrame(data, columns=['x', 'y'])
+    df = DataFrame(data)
     if isfast:
         kmeans = KMeans(n_clusters=ncluster).fit(df)
     else:
         kmeans = KMeans(n_clusters=ncluster, init="random").fit(df)
     centroids = kmeans.cluster_centers_
     labels = kmeans.labels_
-    return labels;
+    return labels
 
 
-def dbscan(data):
-    # X = np.array([[1, 2], [2, 2], [2, 3],
-    #               [8, 7], [8, 8], [25, 80]])
-    clustering = DBSCAN(eps=3, min_samples=2).fit(data)
+def dbscan(data,eps,min_samples):
+    clustering = DBSCAN(eps=eps, min_samples=min_samples).fit(data)
     return clustering.labels_
 
 
-def kmode(data):
+def kmode(data, ncluster, n_init, verbose):
     # kmode for categorical data
 
     # random categorical data
@@ -39,6 +35,7 @@ def kmode(data):
 
     clusters = km.fit_predict(data)
     return clusters
+
 
 # def icc():
 #     # TODO fix icc
@@ -57,3 +54,4 @@ def kmode(data):
 #     print(isclose(icc_val, 0.728, abs_tol=0.001))
 #
 #
+
