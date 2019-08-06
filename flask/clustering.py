@@ -31,7 +31,7 @@ def kmode(data, ncluster, n_init, verbose):
 
     # random categorical data
     data = np.random.choice(20, (100, 10))
-    km = KModes(n_clusters=4, init='Huang', n_init=5, verbose=1)
+    km = KModes(n_clusters=ncluster, init='Huang', n_init=n_init, verbose=verbose)
 
     clusters = km.fit_predict(data)
     return clusters
