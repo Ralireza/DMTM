@@ -1,6 +1,8 @@
 # Byte-compiled / optimized / DLL files
 flask/__pycache__/
 .idea
+logg.txt
+doc.md
 *.py[cod]
 *$py.class
 
