@@ -1,12 +1,12 @@
 import random
-import flask.descriptive_feature as df
+import descriptive_feature as df
 from fancyimpute import KNN
 
 
-def imputation(number_list, missing_index, mode):
+def imputation(number_list, missing_index, mode,k=3):
     if mode is 'knn':
-        X_filled_knn = KNN(k=3).fit_transform(number_list)
-        return number_list
+        X_filled_knn = KNN(k=k).fit_transform(number_list)
+        return X_filled_knn
     elif mode is 'random':
         number_list[missing_index] = random.choice(number_list)
         return number_list

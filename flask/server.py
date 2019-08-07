@@ -9,6 +9,7 @@ import descriptive_feature as df
 import coefficient as co
 import statistical_test as stt
 import clustering as cls
+import imputation as imp
 import numpy as np
 
 current_path = os.path.dirname(os.path.abspath(__file__))
@@ -1563,6 +1564,7 @@ def dbscan():
         resp = jsonify(data)
         return resp
 
+
 # TODO its bullshit and dont use in production
 @app.route("/api/v1/clustering/kmode", methods=['POST'])
 def kmode():
@@ -1610,15 +1612,15 @@ def kmode():
 # </editor-fold>
 
 # <editor-fold desc="imputaion">
-@app.route("/api/v1/clustering/kmeans", methods=['POST'])
-def kmeans():
+@app.route("/api/v1/imputation/knn", methods=['POST'])
+def knn():
     if request.method == 'POST':
         try:
             req_data = request.get_json()
             data_url = req_data['data_file']
-            parameter = req_data['parameters']
-            isfast = parameter['isfast']
-            ncluster = parameter['ncluster']
+            parameters = req_data['parameters']
+            mode = parameters['mode']
+            k = parameters['k']
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
 
@@ -1631,13 +1633,9 @@ def kmeans():
                 for i in range(len(l)):
                     if math.isinf(l[i]):
                         l[i] = 0
-            mdict = dict()
-            for i in range(len(lists)):
-                mdict[i] = lists[i]
-            labels = cls.kmeans(mdict, ncluster, isfast)
-            labels = np.array(labels).T.tolist()
-            result = {"labels": labels}
-
+            empty = np.array(lists[0]).reshape(1, -1)
+            labels = imp.imputation(empty, 1, mode, k)
+            result = {"data": list(np.array(labels).flat)}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
@@ -1653,6 +1651,7 @@ def kmeans():
         }
         resp = jsonify(data)
         return resp
+
 
 # </editor-fold>
 
