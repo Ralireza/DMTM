@@ -48,7 +48,7 @@ def frequency():
             result = []
             # my_list = [1, 1, 2, 2, 3, 3, 4, 4, 2, 2, 8, 8, 8, 8, 9]
             # my_list2 = [1, 2, 8]
-
+            num_list2 = list(set(num_list2))  # delete same value
             for index, question in enumerate(num_list2):
                 dict = {"id": (index),
                         "relative": freq.relative_frequency(num_list1, question, True),
@@ -84,14 +84,20 @@ def min():
             data_url = req_data['data_file']
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
-            num_list1 = list(csv[headers[0]])
+            num_list1 = []
+            for head in headers:
+                # delete outlier by impute zero
+                for i in range(len(csv[head])):
+                    if math.isinf(float(csv[head][i])):
+                        csv[head][i] = 0
+                num_list1.append(list(csv[head]))
+            min_result = []
+            result = []
+            for column in num_list1:
+                min_result.append(df.min_num(column))
+            for j in range(len(num_list1)):
+                result.append({j: min_result[j]})
 
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(float(num_list1[i])):
-                    num_list1[i] = 0
-
-            result = {"min": df.min_num(num_list1)}
 
         except Exception:
             bad_request()
@@ -118,15 +124,19 @@ def max():
             data_url = req_data['data_file']
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
-            num_list1 = list(csv[headers[0]])
-
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(float(num_list1[i])):
-                    num_list1[i] = 0
-
-            result = {"max": df.max_num(num_list1)}
-
+            num_list1 = []
+            for head in headers:
+                # delete outlier by impute zero
+                for i in range(len(csv[head])):
+                    if math.isinf(float(csv[head][i])):
+                        csv[head][i] = 0
+                num_list1.append(list(csv[head]))
+            res = []
+            result = []
+            for column in num_list1:
+                res.append(df.max_num(column))
+            for j in range(len(num_list1)):
+                result.append({j: res[j]})
         except Exception:
             bad_request()
         response_dir = current_path + '/dmtm_responses'
@@ -152,14 +162,19 @@ def range_domain():
             data_url = req_data['data_file']
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
-            num_list1 = list(csv[headers[0]])
-
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(float(num_list1[i])):
-                    num_list1[i] = 0
-
-            result = {"domainrange": df.range_domain(num_list1)}
+            num_list1 = []
+            for head in headers:
+                # delete outlier by impute zero
+                for i in range(len(csv[head])):
+                    if math.isinf(float(csv[head][i])):
+                        csv[head][i] = 0
+                num_list1.append(list(csv[head]))
+            res = []
+            result = []
+            for column in num_list1:
+                res.append(df.range_domain(column))
+            for j in range(len(num_list1)):
+                result.append({j: res[j]})
 
         except Exception:
             bad_request()
@@ -186,15 +201,19 @@ def mean():
             data_url = req_data['data_file']
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
-            num_list1 = list(csv[headers[0]])
-
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(float(num_list1[i])):
-                    num_list1[i] = 0
-
-            result = {"mean": df.mean(num_list1)}
-
+            num_list1 = []
+            for head in headers:
+                # delete outlier by impute zero
+                for i in range(len(csv[head])):
+                    if math.isinf(float(csv[head][i])):
+                        csv[head][i] = 0
+                num_list1.append(list(csv[head]))
+            res = []
+            result = []
+            for column in num_list1:
+                res.append(df.mean(column))
+            for j in range(len(num_list1)):
+                result.append({j: res[j]})
         except Exception:
             bad_request()
         response_dir = current_path + '/dmtm_responses'
@@ -219,12 +238,23 @@ def tmean():
         data_url = req_data['data_file']
         csv = pandas.read_csv(data_url)
         headers = csv.columns.values
-        num_list1 = csv[headers[0]]
         params = None
         try:
             params = req_data['parameters']
-            mean1 = df.trimmed_mean(num_list1, params['limit'])
-            result = {"tmean": mean1}
+            num_list1 = []
+            for head in headers:
+                # delete outlier by impute zero
+                for i in range(len(csv[head])):
+                    if math.isinf(float(csv[head][i])):
+                        csv[head][i] = 0
+                num_list1.append(list(csv[head]))
+            res = []
+            result = []
+            for column in num_list1:
+                res.append(df.trimmed_mean(column, params['limit']))
+            for j in range(len(num_list1)):
+                result.append({j: res[j]})
+
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
@@ -260,14 +290,19 @@ def mode():
             data_url = req_data['data_file']
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
-            num_list1 = list(csv[headers[0]])
-
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(float(num_list1[i])):
-                    num_list1[i] = 0
-
-            result = {"mode": df.mode(num_list1)}
+            num_list1 = []
+            for head in headers:
+                # delete outlier by impute zero
+                for i in range(len(csv[head])):
+                    if math.isinf(float(csv[head][i])):
+                        csv[head][i] = 0
+                num_list1.append(list(csv[head]))
+            res = []
+            result = []
+            for column in num_list1:
+                res.append(df.mode(column))
+            for j in range(len(num_list1)):
+                result.append({j: res[j]})
 
         except Exception:
             bad_request()
@@ -294,14 +329,19 @@ def median():
             data_url = req_data['data_file']
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
-            num_list1 = list(csv[headers[0]])
-
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(float(num_list1[i])):
-                    num_list1[i] = 0
-
-            result = {"median": df.median(num_list1)}
+            num_list1 = []
+            for head in headers:
+                # delete outlier by impute zero
+                for i in range(len(csv[head])):
+                    if math.isinf(float(csv[head][i])):
+                        csv[head][i] = 0
+                num_list1.append(list(csv[head]))
+            res = []
+            result = []
+            for column in num_list1:
+                res.append(df.median(column))
+            for j in range(len(num_list1)):
+                result.append({j: res[j]})
 
         except Exception:
             bad_request()
@@ -365,14 +405,19 @@ def variance():
             data_url = req_data['data_file']
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
-            num_list1 = list(csv[headers[0]])
-
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(float(num_list1[i])):
-                    num_list1[i] = 0
-
-            result = {"variance": df.variance(num_list1)}
+            num_list1 = []
+            for head in headers:
+                # delete outlier by impute zero
+                for i in range(len(csv[head])):
+                    if math.isinf(float(csv[head][i])):
+                        csv[head][i] = 0
+                num_list1.append(list(csv[head]))
+            res = []
+            result = []
+            for column in num_list1:
+                res.append(df.variance(column))
+            for j in range(len(num_list1)):
+                result.append({j: res[j]})
 
         except Exception:
             bad_request()
@@ -399,14 +444,19 @@ def deviation():
             data_url = req_data['data_file']
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
-            num_list1 = list(csv[headers[0]])
-
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(float(num_list1[i])):
-                    num_list1[i] = 0
-
-            result = {"deviation": df.deviation(num_list1)}
+            num_list1 = []
+            for head in headers:
+                # delete outlier by impute zero
+                for i in range(len(csv[head])):
+                    if math.isinf(float(csv[head][i])):
+                        csv[head][i] = 0
+                num_list1.append(list(csv[head]))
+            res = []
+            result = []
+            for column in num_list1:
+                res.append(df.deviation(column))
+            for j in range(len(num_list1)):
+                result.append({j: res[j]})
 
         except Exception:
             bad_request()
@@ -435,14 +485,20 @@ def quantile():
             q = params["q"]
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
-            num_list1 = list(csv[headers[0]])
+            num_list1 = []
+            for head in headers:
+                # delete outlier by impute zero
+                for i in range(len(csv[head])):
+                    if math.isinf(float(csv[head][i])):
+                        csv[head][i] = 0
+                num_list1.append(list(csv[head]))
+            res = []
+            result = []
+            for column in num_list1:
+                res.append(df.quantile(column, q))
+            for j in range(len(num_list1)):
+                result.append({j: res[j]})
 
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(float(num_list1[i])):
-                    num_list1[i] = 0
-
-            result = {"quantile": df.quantile(num_list1, q)}
 
         except Exception:
             bad_request()
@@ -469,14 +525,19 @@ def population_skewness():
             data_url = req_data['data_file']
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
-            num_list1 = list(csv[headers[0]])
-
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(float(num_list1[i])):
-                    num_list1[i] = 0
-
-            result = {"skewness": df.population_skewness(num_list1)}
+            num_list1 = []
+            for head in headers:
+                # delete outlier by impute zero
+                for i in range(len(csv[head])):
+                    if math.isinf(float(csv[head][i])):
+                        csv[head][i] = 0
+                num_list1.append(list(csv[head]))
+            res = []
+            result = []
+            for column in num_list1:
+                res.append(df.population_skewness(column))
+            for j in range(len(num_list1)):
+                result.append({j: res[j]})
 
         except Exception:
             bad_request()
@@ -503,14 +564,19 @@ def kurtosis():
             data_url = req_data['data_file']
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
-            num_list1 = list(csv[headers[0]])
-
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(float(num_list1[i])):
-                    num_list1[i] = 0
-
-            result = {"kurtosis": df.kurtosis(num_list1)}
+            num_list1 = []
+            for head in headers:
+                # delete outlier by impute zero
+                for i in range(len(csv[head])):
+                    if math.isinf(float(csv[head][i])):
+                        csv[head][i] = 0
+                num_list1.append(list(csv[head]))
+            res = []
+            result = []
+            for column in num_list1:
+                res.append(df.kurtosis(column))
+            for j in range(len(num_list1)):
+                result.append({j: res[j]})
 
         except Exception:
             bad_request()
@@ -1059,15 +1125,22 @@ def chisquare_test():
             data_url = req_data['data_file']
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
-            num_list1 = list(csv[headers[0]])
+            num_list1 = []
+            for head in headers:
+                # delete outlier by impute zero
+                for i in range(len(csv[head])):
+                    if math.isinf(float(csv[head][i])):
+                        csv[head][i] = 0
+                num_list1.append(list(csv[head]))
+            res = []
+            result = []
+            for column in num_list1:
+                chsq, pval = stt.chisquare_test(column)
+                res.append({"chsq": chsq, "pval": pval})
 
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(num_list1[i]):
-                    num_list1[i] = 0
+            for j in range(len(num_list1)):
+                result.append({j: res[j]})
 
-            chsq, pval = stt.chisquare_test(num_list1)
-            result = {"chsq": chsq, "pval": pval}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
@@ -1107,6 +1180,7 @@ def t():
 
             t, pval = stt.t_test(num_list1, num_list2)
             result = {"t": t, "pval": pval}
+
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
@@ -1285,18 +1359,22 @@ def normalt():
             data_url = req_data['data_file']
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
-            lists = []
-            for l in headers:
-                lists.append(csv[l])
+            num_list1 = []
+            for head in headers:
+                # delete outlier by impute zero
+                for i in range(len(csv[head])):
+                    if math.isinf(float(csv[head][i])):
+                        csv[head][i] = 0
+                num_list1.append(list(csv[head]))
+            res = []
+            result = []
+            for column in num_list1:
+                normal, pval = stt.normal_test(column)
+                res.append({"normal": normal, "pval": pval})
 
-            # delete outlier by impute zero
-            for l in lists:
-                for i in range(len(l)):
-                    if math.isinf(l[i]):
-                        l[i] = 0
+            for j in range(len(num_list1)):
+                result.append({j: res[j]})
 
-            normal, pval = stt.normal_test(lists[0])
-            result = {"normal": normal, "pval": pval}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
@@ -1470,6 +1548,95 @@ def confirmatory_factor_analyzer():
         return resp
 
 
+@app.route("/api/v1/test/pearson", methods=['POST'])
+def pearson_test():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            p_value = req_data['p_value']
+            if "alpha" in req_data:
+                alpha = req_data['alpha']
+            else:
+                alpha = 0.05
+
+            correlation = stt.pearson_test(p_value, alpha)
+            result = {"correlation": correlation}
+
+        except Exception:
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'result': result
+        }
+        resp = jsonify(data)
+        return resp
+
+@app.route("/api/v1/test/spearman", methods=['POST'])
+def spearman_test():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            p_value = req_data['p_value']
+            if "alpha" in req_data:
+                alpha = req_data['alpha']
+            else:
+                alpha = 0.05
+
+            correlation = stt.spearman_test(p_value, alpha)
+            result = {"correlation": correlation}
+
+        except Exception:
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'result': result
+        }
+        resp = jsonify(data)
+        return resp
+
+@app.route("/api/v1/test/kendalltau", methods=['POST'])
+def kendalltau_test():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            p_value = req_data['p_value']
+            if "alpha" in req_data:
+                alpha = req_data['alpha']
+            else:
+                alpha = 0.05
+
+            correlation = stt.kendalltau_test(p_value, alpha)
+            result = {"correlation": correlation}
+
+        except Exception:
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'result': result
+        }
+        resp = jsonify(data)
+        return resp
 # </editor-fold>
 
 # <editor-fold desc="clustering">
@@ -1611,7 +1778,7 @@ def kmode():
 
 # </editor-fold>
 
-# <editor-fold desc="imputaion">
+# <editor-fold desc="imputation">
 @app.route("/api/v1/imputation/knn", methods=['POST'])
 def knn():
     if request.method == 'POST':
@@ -1628,7 +1795,7 @@ def knn():
                 lists.append(csv[l])
 
             empty = np.array(lists[0]).reshape(1, -1)
-            labels = imp.imputation(empty,  "knn", k)
+            labels = imp.imputation(empty, "knn", k)
             result = {"data": list(np.array(labels).flat)}
         except Exception:
             # result = {"error": "bad param or no param"}
@@ -1656,12 +1823,23 @@ def random():
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
 
-            lists = []
-            for l in headers:
-                lists.append(csv[l])
+            num_list1 = []
+            for head in headers:
+                num_list1.append(list(csv[head]))
+            res = []
+            result = []
+            for column in num_list1:
+                labels = imp.imputation(column, "random")
+                res.append(list(labels))
+            for j in range(len(num_list1)):
+                result.append({j: res[j]})
 
-            labels = imp.imputation(lists[0],  "random")
-            result = {"data": list(np.array(labels).flat)}
+            # lists = []
+            # for l in headers:
+            #     lists.append(csv[l])
+            #
+            # labels = imp.imputation(lists[0], "random")
+            # result = {"data": list(np.array(labels).flat)}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
@@ -1688,12 +1866,18 @@ def frequency_impute():
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
 
-            lists = []
-            for l in headers:
-                lists.append(csv[l])
+            num_list1 = []
+            for head in headers:
+                num_list1.append(list(csv[head]))
+            res = []
+            result = []
+            for column in num_list1:
+                labels = imp.imputation(column, "frequency")
+                res.append(list(labels))
+            for j in range(len(num_list1)):
+                result.append({j: res[j]})
 
-            labels = imp.imputation(lists[0], "frequency")
-            result = {"data": labels.tolist()}
+
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
@@ -1720,12 +1904,16 @@ def mean_impute():
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
 
-            lists = []
-            for l in headers:
-                lists.append(csv[l])
-
-            labels = imp.imputation(lists[0], "mean")
-            result = {"data": labels.tolist()}
+            num_list1 = []
+            for head in headers:
+                num_list1.append(list(csv[head]))
+            res = []
+            result = []
+            for column in num_list1:
+                labels = imp.imputation(column, "mean")
+                res.append(list(labels))
+            for j in range(len(num_list1)):
+                result.append({j: res[j]})
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()

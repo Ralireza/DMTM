@@ -80,3 +80,27 @@ def confirmatory_factor_analyzer(data_feature):
     factora.fit(data_feature)
     loadings, varcovs, trans = cfa.loadings_, cfa.factor_varcovs_, cfa.transform(data_feature.values)
     return loadings, varcovs, trans
+
+
+def spearman_test(p_value, alpha):
+    correlation = 0
+    if p_value < alpha:
+        # correlated
+        correlation = 1
+    return correlation
+
+
+def pearson_test(p_value, alpha):
+    correlation = 0
+    if p_value < alpha:
+        # correlated
+        correlation = 1
+    return correlation
+
+
+def kendalltau_test(p_value, alpha):
+    correlation = 0
+    if p_value < alpha:
+        # correlated
+        correlation = 1
+    return correlation
