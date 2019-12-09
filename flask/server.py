@@ -1578,6 +1578,7 @@ def pearson_test():
         resp = jsonify(data)
         return resp
 
+
 @app.route("/api/v1/test/spearman", methods=['POST'])
 def spearman_test():
     if request.method == 'POST':
@@ -1608,6 +1609,7 @@ def spearman_test():
         resp = jsonify(data)
         return resp
 
+
 @app.route("/api/v1/test/kendalltau", methods=['POST'])
 def kendalltau_test():
     if request.method == 'POST':
@@ -1637,6 +1639,70 @@ def kendalltau_test():
         }
         resp = jsonify(data)
         return resp
+
+
+@app.route("/api/v1/test/cramersv", methods=['POST'])
+def cramersv_test():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            coeff = req_data['coefficient']
+            if "alpha" in req_data:
+                alpha = req_data['alpha']
+            else:
+                alpha = 0.95
+
+            correlation = stt.cramersv_test(coeff, alpha)
+            result = {"association": correlation}
+
+        except Exception:
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'result': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+@app.route("/api/v1/test/somersd", methods=['POST'])
+def somersd_test():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            coeff = req_data['coefficient']
+            if "alpha" in req_data:
+                alpha = req_data['alpha']
+            else:
+                alpha = 0.95
+
+            association, direction = stt.somersd_test(coeff, alpha)
+            result = {"association": association, "direction": direction}
+
+        except Exception:
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'result': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
 # </editor-fold>
 
 # <editor-fold desc="clustering">

@@ -104,3 +104,25 @@ def kendalltau_test(p_value, alpha):
         # correlated
         correlation = 1
     return correlation
+
+
+def cramersv_test(coefficient, treshhold):
+    association = 0
+    if coefficient > treshhold:
+        # associated
+        association = 1
+    return association
+
+
+def somersd_test(coefficient, treshhold):
+    association = 0
+    direction = 1
+
+    if coefficient < 0:
+        direction = -1
+
+    if math.fabs(coefficient) > treshhold:
+        # associated
+        association = 1
+
+    return association, direction
