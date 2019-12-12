@@ -126,3 +126,13 @@ def somersd_test(coefficient, treshhold):
         association = 1
 
     return association, direction
+
+
+def cohen_test(coefficient, treshhold):
+    agreement = 0
+
+    if coefficient >= treshhold:
+        # agreement
+        agreement = 1
+
+    return agreement

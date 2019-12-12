@@ -3,8 +3,10 @@ from scipy import stats as ss
 import numpy as np
 import pandas as pd
 from sklearn import metrics
-from psy import sem
 import math
+from semopy import Model
+from semopy import Optimizer
+from semopy.inspector import inspect
 
 
 def pearson_correlation(list_number1, list_number2):
@@ -73,10 +75,20 @@ def anova_eta_omg(numlist1, numlist2):
     return eta_sqrd, om_sqrd
 
 
-def structural_equation_modeling(data, y, x, lam_x, lam_y, beta, gamma):
-    # https://github.com/inuyasha2012/pypsy/blob/master/demo/demo_sem.py
-    lam_x, lam_y, phi_x, beta, gamma, var_e, var_e_x, var_e_y = sem(data, y, x, lam_x, lam_y, beta, gamma)
-    return lam_x, lam_y, phi_x, beta, gamma, var_e, var_e_x, var_e_y
+def structural_equation_modeling(data, mod):
+    model = Model(mod)
+    model.load_dataset(data)
+    opt = Optimizer(model)
+    objective_function_value = opt.optimize()
+    result = inspect(opt, mode='mx')
+    beta = result[0][1].to_dict('dict')
+    lam = result[1][1].to_dict('dict')
+    psi = result[2][1].to_dict('dict')
+    theta = result[3][1].to_dict('dict')
+    sigma = result[4][1].to_dict('dict')
+    cov = result[5][1].to_dict('dict')
+
+    return beta, lam, psi, theta, sigma, cov
 
 
 def payaii(list_number1, list_number2):
@@ -128,4 +140,3 @@ def get_matrix_biserial(p1, p2, y, *args):
             row.append(biserial(item1, item2, p1, p2, y))
         final_matrix.append(row)
     return final_matrix
-

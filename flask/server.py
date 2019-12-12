@@ -872,28 +872,20 @@ def anova_eta_omg():
         return resp
 
 
-# TODO
 @app.route("/api/v1/coefficient/sem", methods=['POST'])
 def structural_equation_modeling():
     if request.method == 'POST':
         try:
             req_data = request.get_json()
             data_url = req_data['data_file']
+            model = req_data['model']
+            model = "\n".join(model)
+
             csv = pandas.read_csv(data_url)
-            headers = csv.columns.values
-            num_list1 = list(csv[headers[0]])
-            num_list2 = list(csv[headers[1]])
 
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(num_list1[i]):
-                    num_list1[i] = 0
-            for i in range(len(num_list2)):
-                if math.isinf(num_list2[i]):
-                    num_list2[i] = 0
+            beta, lam, psi, theta, sigma, cov = co.structural_equation_modeling(csv, model)
+            result = {"beta": beta, "lambda": lam, "psi": psi, "theta": theta, "sigma": sigma, "cov": cov}
 
-            eta, omg = co.structural_equation_modeling(num_list1, num_list2)
-            result = {"eta": eta, "omg": omg}
         except KeyboardInterrupt:
             # result = {"error": "bad param or no param"}
             bad_request()
@@ -905,8 +897,7 @@ def structural_equation_modeling():
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
-            'results': result
+            'result_file': res_path
         }
         resp = jsonify(data)
         return resp
@@ -1685,6 +1676,37 @@ def somersd_test():
 
             association, direction = stt.somersd_test(coeff, alpha)
             result = {"association": association, "direction": direction}
+
+        except Exception:
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'result': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
+@app.route("/api/v1/test/tavafoghi", methods=['POST'])
+def tavafoghi_test():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            coeff = req_data['coefficient']
+            if "alpha" in req_data:
+                alpha = req_data['alpha']
+            else:
+                alpha = 0.8
+
+            agreement = stt.cohen_test(coeff, alpha)
+            result = {"agreement": agreement}
 
         except Exception:
             bad_request()
