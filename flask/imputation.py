@@ -2,12 +2,15 @@ import random
 import descriptive_feature as df
 from fancyimpute import KNN
 import math
+import sys
+from impyute.imputation.cs import fast_knn
+sys.setrecursionlimit(100000) #Increase the recursion limit of the OS
 
 
 def imputation(number_list, mode, k=3):
     if mode is 'knn':
-        X_filled_knn = KNN(k=k).fit_transform(number_list)
-        return X_filled_knn
+        imputed_training = fast_knn(number_list, k)
+        return imputed_training
     elif mode is 'random':
         cleanedList = []
         for i in number_list:
@@ -38,3 +41,6 @@ def imputation(number_list, mode, k=3):
             if math.isnan(value):
                 number_list[index] = df.mean(cleanedList)
         return number_list
+
+# imputed_training = fast_knn([1,2,3,0,5], k=2)
+# print(imputed_training)

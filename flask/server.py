@@ -1878,13 +1878,9 @@ def knn():
             csv = pandas.read_csv(data_url)
             headers = csv.columns.values
 
-            lists = []
-            for l in headers:
-                lists.append(csv[l])
-
-            empty = np.array(lists[0]).reshape(1, -1)
-            labels = imp.imputation(empty, "knn", k)
-            result = {"data": list(np.array(labels).flat)}
+            labels = imp.imputation(csv, "knn", k)
+            labels=labels.to_dict('dict')
+            result = labels
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
