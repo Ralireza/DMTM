@@ -1925,6 +1925,33 @@ def regression_imputation():
         return resp
 
 
+@app.route("/api/v1/imputation/corrected", methods=['POST'])
+def corrected_imputation():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+
+            labels = imp.imputation(csv, "corrected")
+            result = labels
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path
+        }
+        resp = jsonify(data)
+        return resp
+
+
 @app.route("/api/v1/imputation/random", methods=['POST'])
 def random():
     if request.method == 'POST':

@@ -14,6 +14,7 @@ def imputation(number_list, mode, k=3):
     if mode is 'knn':
         imputed_training = fast_knn(number_list, k)
         return imputed_training
+
     elif mode is 'random':
         cleanedList = []
         for i in number_list:
@@ -23,9 +24,11 @@ def imputation(number_list, mode, k=3):
             if math.isnan(value):
                 number_list[index] = random.choice(cleanedList)
         return number_list
+
     elif mode is 'regression':
         number_list = reg_impute(number_list)
         return number_list
+
     elif mode is 'frequency':
         cleanedList = []
         for i in number_list:
@@ -35,6 +38,7 @@ def imputation(number_list, mode, k=3):
             if math.isnan(value):
                 number_list[index] = df.mode(cleanedList)
         return number_list
+
     elif mode is 'mean':
         cleanedList = []
         for i in number_list:
@@ -43,8 +47,14 @@ def imputation(number_list, mode, k=3):
         for index, value in enumerate(number_list):
             if math.isnan(value):
                 number_list[index] = df.mean(cleanedList)
+
+    elif mode is 'corrected':
+        number_list = correct_impute(number_list)
         return number_list
 
+    elif mode is 'fard':
+        number_list = correct_impute(number_list)
+        return number_list
 
 def random_imputation(dd, feature):
     number_missing = dd[feature].isnull().sum()
@@ -76,3 +86,33 @@ def reg_impute(csv):
     return final_list
 
 
+def correct_impute(number_list):
+    empty_row=set()
+    for index, row in number_list.iterrows():
+        for one in row :
+            if math.isnan(one):
+                empty_row.add(index)
+
+    for row in empty_row:
+        q_means = []
+        user_means = []
+
+        for col in number_list:
+            q_means.append(number_list[col].mean())
+        mean_user = number_list.iloc[row].mean()
+
+        for q in q_means:
+            user_means.append(q - mean_user)
+
+        final_mean = sum(user_means) / len(user_means)
+
+        for index, value in enumerate(number_list.iloc[row]):
+            if math.isnan(value):
+                number_list.iloc[row,index] = q_means[index] + final_mean
+        dict=number_list.to_dict('dict')
+    return dict
+
+
+csv = pd.read_csv("/Users/alireza/project/DMTM/flask/files/sample5.csv")
+a = correct_impute(csv)
+print(a)
