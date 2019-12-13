@@ -1,10 +1,13 @@
 import random
 import descriptive_feature as df
-from fancyimpute import KNN
 import math
 import sys
 from impyute.imputation.cs import fast_knn
-sys.setrecursionlimit(100000) #Increase the recursion limit of the OS
+import numpy as np
+import pandas as pd
+from sklearn import linear_model
+
+sys.setrecursionlimit(100000)  # Increase the recursion limit of the OS
 
 
 def imputation(number_list, mode, k=3):
@@ -21,7 +24,7 @@ def imputation(number_list, mode, k=3):
                 number_list[index] = random.choice(cleanedList)
         return number_list
     elif mode is 'regression':
-        # TODO icant find any function
+        number_list = reg_impute(number_list)
         return number_list
     elif mode is 'frequency':
         cleanedList = []
@@ -42,5 +45,34 @@ def imputation(number_list, mode, k=3):
                 number_list[index] = df.mean(cleanedList)
         return number_list
 
-# imputed_training = fast_knn([1,2,3,0,5], k=2)
-# print(imputed_training)
+
+def random_imputation(dd, feature):
+    number_missing = dd[feature].isnull().sum()
+    observed_values = dd.loc[dd[feature].notnull(), feature]
+    dd.loc[dd[feature].isnull(), feature + '_imp'] = np.random.choice(observed_values, number_missing, replace=True)
+    return dd
+
+
+def reg_impute(csv):
+    missing_columns = csv.columns.values
+    final_list = {}
+    for feature in missing_columns:
+        csv[feature + '_imp'] = csv[feature]
+        csv = random_imputation(csv, feature)
+    deter_data = pd.DataFrame(columns=["Det" + name for name in missing_columns])
+
+    for feature in missing_columns:
+        deter_data["Det" + feature] = csv[feature + "_imp"]
+        parameters = list(set(csv.columns) - set(missing_columns) - {feature + '_imp'})
+
+        # Create a Linear Regression model to estimate the missing data
+        model = linear_model.LinearRegression()
+        model.fit(X=csv[parameters], y=csv[feature + '_imp'])
+
+        # observe that I preserve the index of the missing data from the original dataframe
+        deter_data.loc[csv[feature].isnull(), "Det" + feature] = model.predict(csv[parameters])[csv[feature].isnull()]
+    for feature in missing_columns:
+        final_list[feature] = (list(csv[feature + "_imp"]))
+    return final_list
+
+
