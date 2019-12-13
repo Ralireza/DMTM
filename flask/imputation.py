@@ -53,8 +53,13 @@ def imputation(number_list, mode, k=3):
         return number_list
 
     elif mode is 'fard':
-        number_list = correct_impute(number_list)
+        number_list = fard_impute(number_list)
         return number_list
+
+    elif mode is 'porsesh':
+        number_list = porsesh_impute(number_list)
+        return number_list
+
 
 def random_imputation(dd, feature):
     number_missing = dd[feature].isnull().sum()
@@ -87,9 +92,9 @@ def reg_impute(csv):
 
 
 def correct_impute(number_list):
-    empty_row=set()
+    empty_row = set()
     for index, row in number_list.iterrows():
-        for one in row :
+        for one in row:
             if math.isnan(one):
                 empty_row.add(index)
 
@@ -108,11 +113,41 @@ def correct_impute(number_list):
 
         for index, value in enumerate(number_list.iloc[row]):
             if math.isnan(value):
-                number_list.iloc[row,index] = q_means[index] + final_mean
-        dict=number_list.to_dict('dict')
+                number_list.iloc[row, index] = q_means[index] + final_mean
+        dict = number_list.to_dict('dict')
     return dict
 
 
+def fard_impute(number_list):
+    empty_row = set()
+    for index, row in number_list.iterrows():
+        for one in row:
+            if math.isnan(one):
+                empty_row.add(index)
+    for row in empty_row:
+        mean_user = number_list.iloc[row].mean()
+        for index, value in enumerate(number_list.iloc[row]):
+            if math.isnan(value):
+                number_list.iloc[row, index] = mean_user
+        dict = number_list.to_dict('dict')
+    return dict
+
+
+def porsesh_impute(number_list):
+    empty_col = set()
+    for col in number_list:
+        for one in number_list[col]:
+            if type(one) is not str:
+                if math.isnan(one):
+                    empty_col.add(col)
+    for col in empty_col:
+        mean_user = number_list[col].mean()
+        for index, value in enumerate(number_list[col]):
+            if math.isnan(value):
+                number_list[col][index] = mean_user
+        dict = number_list.to_dict('dict')
+    return dict
+
 csv = pd.read_csv("/Users/alireza/project/DMTM/flask/files/sample5.csv")
-a = correct_impute(csv)
+a = porsesh_impute(csv)
 print(a)
