@@ -1,6 +1,8 @@
 from scipy import stats as ss
 import factor_analyzer as fa
 import math
+import numpy as np
+import scipy.stats as st
 
 
 def chisquare_test(number_list):
@@ -136,3 +138,39 @@ def cohen_test(coefficient, treshhold):
         agreement = 1
 
     return agreement
+
+
+def random_test(list, alpha=0.05):
+    # https://medium.com/@sddkal/runs-test-implementation-in-python-6236b0a2b433
+    # Get positive and negative values
+    v=np.median(list)
+    mask = list > v
+    # get runs mask
+    p = mask == True
+    n = mask == False
+    xor = np.logical_xor(p[:-1], p[1:])
+    # A run can be identified by positive
+    # to negative (or vice versa) changes
+    list = sum(xor) + 1  # Get number of runs
+
+    n_p = sum(p)  # Number of positives
+    n_n = sum(n)
+    # Temporary intermediate values
+    tmp = 2 * n_p * n_n
+    tmps = n_p + n_n
+    # Expected value
+    r_hat = np.float64(tmp) / tmps + 1
+    # Variance
+    s_r_squared = (tmp * (tmp - tmps)) / (tmps * tmps * (tmps - 1))
+    # Standard deviation
+    s_r = np.sqrt(s_r_squared)
+    # Test score
+    z = (list - r_hat) / s_r
+
+    # Get normal table
+    z_alpha = st.norm.ppf(1 - alpha)
+    # Check hypothesis
+    return z, z_alpha
+
+
+

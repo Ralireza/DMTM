@@ -1725,6 +1725,41 @@ def tavafoghi_test():
         return resp
 
 
+@app.route("/api/v1/test/random", methods=['POST'])
+def random_test():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            csv = pandas.read_csv(data_url)
+
+            list = (csv[csv.columns[0]].values.tolist())
+
+            if "alpha" in req_data:
+                alpha = req_data['alpha']
+            else:
+                alpha = 0.05
+
+            z, z_alpha = stt.random_test(list, alpha)
+            result = {"z": z, "z_alpha": z_alpha}
+
+        except Exception:
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'result': result
+        }
+        resp = jsonify(data)
+        return resp
+
+
 # </editor-fold>
 
 # <editor-fold desc="clustering">

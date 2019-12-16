@@ -148,6 +148,6 @@ def porsesh_impute(number_list):
         dict = number_list.to_dict('dict')
     return dict
 
-csv = pd.read_csv("/Users/alireza/project/DMTM/flask/files/sample5.csv")
-a = porsesh_impute(csv)
-print(a)
+# csv = pd.read_csv("/Users/alireza/project/DMTM/flask/files/sample5.csv")
+# a = porsesh_impute(csv)
+# print(a)
