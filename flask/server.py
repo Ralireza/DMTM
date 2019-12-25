@@ -10,6 +10,7 @@ import coefficient as co
 import statistical_test as stt
 import clustering as cls
 import imputation as imp
+import outlier
 import numpy as np
 
 current_path = os.path.dirname(os.path.abspath(__file__))
@@ -1104,6 +1105,71 @@ def get_matrix_biserial():
         return resp
 
 
+@app.route("/api/v1/coefficient/point_sum", methods=['POST'])
+def get_kol_sum():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            data = pandas.read_csv(data_url)
+
+            if 'weights' in req_data.keys():
+                weights = req_data['weights']
+                w = pandas.read_csv(weights)
+            else:
+                w = None
+
+            result = co.get_nomre_kol_sum(data, w)
+            result = {"result": result}
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
+
+@app.route("/api/v1/coefficient/point_mean", methods=['POST'])
+def get_kol_mean():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            data = pandas.read_csv(data_url)
+
+            if 'weights' in req_data.keys():
+                weights = req_data['weights']
+                w = pandas.read_csv(weights)
+            else:
+                w = None
+
+            result = co.get_nomre_kol_mean(data, w)
+            result = {"result": result}
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path,
+            'results': result
+        }
+        resp = jsonify(data)
+        return resp
 # </editor-fold>
 
 # <editor-fold desc="tests">
@@ -1770,26 +1836,12 @@ def kmeans():
             req_data = request.get_json()
             data_url = req_data['data_file']
             parameter = req_data['parameters']
-            isfast = parameter['isfast']
             ncluster = parameter['ncluster']
             csv = pandas.read_csv(data_url)
-            headers = csv.columns.values
 
-            lists = []
-            for l in headers:
-                lists.append(csv[l])
+            labels, centroids = cls.kmeans(csv, ncluster)
 
-            # delete outlier by impute zero
-            for l in lists:
-                for i in range(len(l)):
-                    if math.isinf(l[i]):
-                        l[i] = 0
-            mdict = dict()
-            for i in range(len(lists)):
-                mdict[i] = lists[i]
-            labels = cls.kmeans(mdict, ncluster, isfast)
-            labels = np.array(labels).T.tolist()
-            result = {"labels": labels}
+            result = {"labels": labels,"centroids":centroids}
 
         except Exception:
             # result = {"error": "bad param or no param"}
@@ -1818,25 +1870,8 @@ def dbscan():
             eps = parameter['eps']
             minsample = parameter['minsample']
             csv = pandas.read_csv(data_url)
-            headers = csv.columns.values
-
-            lists = []
-            for l in headers:
-                lists.append(csv[l])
-
-            # delete outlier by impute zero
-            for l in lists:
-                for i in range(len(l)):
-                    if math.isinf(l[i]):
-                        l[i] = 0
-            a = np.array(lists)
-            data = []
-            for i in range(len(lists[0])):
-                data.append(a[:, i])
-
-            labels = cls.dbscan(data, eps, minsample)
-            labels = np.array(labels).T.tolist()
-            result = {"labels": labels}
+            labels = cls.dbscan(csv, eps, minsample)
+            result = {"labels": labels.tolist()}
 
         except Exception:
             # result = {"error": "bad param or no param"}
@@ -1911,7 +1946,6 @@ def knn():
             parameters = req_data['parameters']
             k = parameters['k']
             csv = pandas.read_csv(data_url)
-            headers = csv.columns.values
 
             labels = imp.imputation(csv, "knn", k)
             labels = labels.to_dict('dict')
@@ -1960,7 +1994,7 @@ def regression_imputation():
         return resp
 
 
-@app.route("/api/v1/imputation/fard_mean", methods=['POST'])
+@app.route("/api/v1/imputation/person_mean", methods=['POST'])
 def fard_imputation():
     if request.method == 'POST':
         try:
@@ -1987,7 +2021,7 @@ def fard_imputation():
         return resp
 
 
-@app.route("/api/v1/imputation/porsesh_mean", methods=['POST'])
+@app.route("/api/v1/imputation/q_mean", methods=['POST'])
 def porsesh_imputation():
     if request.method == 'POST':
         try:
@@ -2075,6 +2109,9 @@ def random():
             req_data = request.get_json()
             data_url = req_data['data_file']
             csv = pandas.read_csv(data_url)
+            for column in csv:
+                if csv[column].isnull().values.all():
+                    csv.drop(columns=column, axis=1, inplace=True)
             headers = csv.columns.values
 
             num_list1 = []
@@ -2118,6 +2155,9 @@ def frequency_impute():
             req_data = request.get_json()
             data_url = req_data['data_file']
             csv = pandas.read_csv(data_url)
+            for column in csv:
+                if csv[column].isnull().values.all():
+                    csv.drop(columns=column, axis=1, inplace=True)
             headers = csv.columns.values
 
             num_list1 = []
@@ -2156,6 +2196,9 @@ def mean_impute():
             req_data = request.get_json()
             data_url = req_data['data_file']
             csv = pandas.read_csv(data_url)
+            for column in csv:
+                if csv[column].isnull().values.all():
+                    csv.drop(columns=column, axis=1, inplace=True)
             headers = csv.columns.values
 
             num_list1 = []
@@ -2184,8 +2227,38 @@ def mean_impute():
         resp = jsonify(data)
         return resp
 
-
 # </editor-fold>
+
+# <editor-fold desc="outlier">
+@app.route("/api/v1/outlier/isofarest", methods=['POST'])
+def isofarest():
+    if request.method == 'POST':
+        try:
+            req_data = request.get_json()
+            data_url = req_data['data_file']
+            parameter = req_data['parameters']
+            max_samples = parameter['max_samples']
+            csv = pandas.read_csv(data_url)
+            labels = outlier.iso_farest(csv, max_samples)
+            result = {"labels": (labels.tolist())}
+
+        except Exception:
+            # result = {"error": "bad param or no param"}
+            bad_request()
+        directory = current_path + '/dmtm_responses'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        current_milli_time = lambda: int(round(time.time() * 1000))
+        res_path = directory + '/' + str(current_milli_time()) + '.json'
+        with open(res_path, 'w') as outfile:
+            json.dump(result, outfile)
+        data = {
+            'result_file': res_path
+        }
+        resp = jsonify(data)
+        return resp
+# </editor-fold>
+
 
 if __name__ == '__main__':
     app.run()

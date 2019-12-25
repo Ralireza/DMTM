@@ -13,6 +13,7 @@ sys.setrecursionlimit(100000)  # Increase the recursion limit of the OS
 
 
 def imputation(number_list, mode, k=3):
+
     if mode is 'knn':
         imputed_training = fast_knn(number_list, k)
         return imputed_training
@@ -46,10 +47,11 @@ def imputation(number_list, mode, k=3):
         for i in number_list:
             if not math.isnan(i):
                 cleanedList.append(i)
+        mean=df.mean(cleanedList)
         for index, value in enumerate(number_list):
             if math.isnan(value):
-                number_list[index] = df.mean(cleanedList)
-
+                number_list[index] = mean
+        return number_list
     elif mode is 'corrected':
         number_list = correct_impute(number_list)
         return number_list

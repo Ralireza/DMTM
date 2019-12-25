@@ -140,3 +140,36 @@ def get_matrix_biserial(p1, p2, y, *args):
             row.append(biserial(item1, item2, p1, p2, y))
         final_matrix.append(row)
     return final_matrix
+
+
+def get_nomre_kol_sum(matrix, weights=None):
+    final_list = []
+    for i in range(len(matrix.index)):
+        x = (list(matrix.iloc[i, :]))
+        if weights is not None:
+            w = (list(weights.iloc[i, :]))
+            my_sum = sum(a * b for (a, b) in zip(x, w))
+        else:
+            my_sum = sum(x)
+        final_list.append(my_sum)
+
+    return final_list
+
+
+def get_nomre_kol_mean(matrix, weights=None):
+    final_list = []
+    for i in range(len(matrix.index)):
+        x = (list(matrix.iloc[i, :]))
+        if weights is not None:
+            w = (list(weights.iloc[i, :]))
+            avg = np.average(x, weights=w)
+        else:
+            avg = sum(x) / len(x)
+        final_list.append(avg)
+
+    return final_list
+
+#
+# csv = pd.read_csv("/Users/alireza/project/DMTM/flask/files/sample6.csv")
+# a = get_nomre_kol_mean(csv)
+# print(a)
