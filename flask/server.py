@@ -1,4 +1,4 @@
-from flask import Flask, abort, request, jsonify
+from flask import Flask, abort, request, jsonify, send_from_directory, current_app
 import pandas
 import json
 import math
@@ -14,6 +14,8 @@ import outlier
 import numpy as np
 
 current_path = os.path.dirname(os.path.abspath(__file__))
+ip = "127.0.0.1"
+dmtm_url = "http://" + ip + ":5000"
 
 
 def bad_request():
@@ -21,6 +23,13 @@ def bad_request():
 
 
 app = Flask(__name__)
+app.config["dmtm_responses"] = "./dmtm_responses"
+
+
+@app.route('/dmtm_responses/<path:filename>', methods=['GET', 'POST'])
+def download(filename):
+    path = os.path.join(current_app.root_path, app.config['dmtm_responses'])
+    return send_from_directory(directory=path, filename=filename)
 
 
 # <editor-fold desc="frequency">
@@ -35,17 +44,6 @@ def frequency():
             num_list1 = list(csv[headers[0]])
             num_list2 = list(csv[headers[1]])
 
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                string_value = str(num_list1[i])
-                if string_value.isdigit():
-                    if math.isinf(float(num_list1[i])):
-                        num_list1[i] = 0
-            for i in range(len(num_list2)):
-                string_value = str(num_list1[i])
-                if string_value.isdigit():
-                    if math.isinf(float(num_list2[i])):
-                        num_list2[i] = 0
             result = []
             # my_list = [1, 1, 2, 2, 3, 3, 4, 4, 2, 2, 8, 8, 8, 8, 9]
             # my_list2 = [1, 2, 8]
@@ -59,14 +57,17 @@ def frequency():
         except Exception:
             bad_request()
         response_dir = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
+
         if not os.path.exists(response_dir):
             os.makedirs(response_dir)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -87,10 +88,6 @@ def min():
             headers = csv.columns.values
             num_list1 = []
             for head in headers:
-                # delete outlier by impute zero
-                for i in range(len(csv[head])):
-                    if math.isinf(float(csv[head][i])):
-                        csv[head][i] = 0
                 num_list1.append(list(csv[head]))
             min_result = []
             result = []
@@ -103,14 +100,16 @@ def min():
         except Exception:
             bad_request()
         response_dir = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(response_dir):
             os.makedirs(response_dir)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -127,10 +126,6 @@ def max():
             headers = csv.columns.values
             num_list1 = []
             for head in headers:
-                # delete outlier by impute zero
-                for i in range(len(csv[head])):
-                    if math.isinf(float(csv[head][i])):
-                        csv[head][i] = 0
                 num_list1.append(list(csv[head]))
             res = []
             result = []
@@ -141,14 +136,16 @@ def max():
         except Exception:
             bad_request()
         response_dir = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(response_dir):
             os.makedirs(response_dir)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -165,10 +162,6 @@ def range_domain():
             headers = csv.columns.values
             num_list1 = []
             for head in headers:
-                # delete outlier by impute zero
-                for i in range(len(csv[head])):
-                    if math.isinf(float(csv[head][i])):
-                        csv[head][i] = 0
                 num_list1.append(list(csv[head]))
             res = []
             result = []
@@ -180,14 +173,16 @@ def range_domain():
         except Exception:
             bad_request()
         response_dir = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(response_dir):
             os.makedirs(response_dir)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -204,10 +199,6 @@ def mean():
             headers = csv.columns.values
             num_list1 = []
             for head in headers:
-                # delete outlier by impute zero
-                for i in range(len(csv[head])):
-                    if math.isinf(float(csv[head][i])):
-                        csv[head][i] = 0
                 num_list1.append(list(csv[head]))
             res = []
             result = []
@@ -218,14 +209,16 @@ def mean():
         except Exception:
             bad_request()
         response_dir = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(response_dir):
             os.makedirs(response_dir)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -244,10 +237,6 @@ def tmean():
             params = req_data['parameters']
             num_list1 = []
             for head in headers:
-                # delete outlier by impute zero
-                for i in range(len(csv[head])):
-                    if math.isinf(float(csv[head][i])):
-                        csv[head][i] = 0
                 num_list1.append(list(csv[head]))
             res = []
             result = []
@@ -269,14 +258,16 @@ def tmean():
         else:
 
             response_dir = current_path + '/dmtm_responses'
+            response_url = dmtm_url + '/dmtm_responses'
             if not os.path.exists(response_dir):
                 os.makedirs(response_dir)
             current_milli_time = lambda: int(round(time.time() * 1000))
             res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+            response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
             with open(res_path, 'w') as outfile:
                 json.dump(result, outfile)
             data = {
-                'result_file': res_path,
+                'result_file': response_complete_url,
                 'results': result
             }
         resp = jsonify(data)
@@ -293,10 +284,6 @@ def mode():
             headers = csv.columns.values
             num_list1 = []
             for head in headers:
-                # delete outlier by impute zero
-                for i in range(len(csv[head])):
-                    if math.isinf(float(csv[head][i])):
-                        csv[head][i] = 0
                 num_list1.append(list(csv[head]))
             res = []
             result = []
@@ -308,14 +295,16 @@ def mode():
         except Exception:
             bad_request()
         response_dir = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(response_dir):
             os.makedirs(response_dir)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -332,10 +321,6 @@ def median():
             headers = csv.columns.values
             num_list1 = []
             for head in headers:
-                # delete outlier by impute zero
-                for i in range(len(csv[head])):
-                    if math.isinf(float(csv[head][i])):
-                        csv[head][i] = 0
                 num_list1.append(list(csv[head]))
             res = []
             result = []
@@ -347,14 +332,16 @@ def median():
         except Exception:
             bad_request()
         response_dir = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(response_dir):
             os.makedirs(response_dir)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -372,26 +359,21 @@ def wmedian():
             num_list1 = list(csv[headers[0]])
             num_list2 = list(csv[headers[1]])
 
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(float(num_list1[i])):
-                    num_list1[i] = 0
-            for i in range(len(num_list2)):
-                if math.isinf(float(num_list2[i])):
-                    num_list2[i] = 0
             result = {"wmedian": df.wighted_median(num_list1, num_list2)}
 
         except Exception:
             bad_request()
         response_dir = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(response_dir):
             os.makedirs(response_dir)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -408,10 +390,6 @@ def variance():
             headers = csv.columns.values
             num_list1 = []
             for head in headers:
-                # delete outlier by impute zero
-                for i in range(len(csv[head])):
-                    if math.isinf(float(csv[head][i])):
-                        csv[head][i] = 0
                 num_list1.append(list(csv[head]))
             res = []
             result = []
@@ -423,14 +401,16 @@ def variance():
         except Exception:
             bad_request()
         response_dir = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(response_dir):
             os.makedirs(response_dir)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -447,10 +427,6 @@ def deviation():
             headers = csv.columns.values
             num_list1 = []
             for head in headers:
-                # delete outlier by impute zero
-                for i in range(len(csv[head])):
-                    if math.isinf(float(csv[head][i])):
-                        csv[head][i] = 0
                 num_list1.append(list(csv[head]))
             res = []
             result = []
@@ -462,14 +438,16 @@ def deviation():
         except Exception:
             bad_request()
         response_dir = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(response_dir):
             os.makedirs(response_dir)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -488,10 +466,6 @@ def quantile():
             headers = csv.columns.values
             num_list1 = []
             for head in headers:
-                # delete outlier by impute zero
-                for i in range(len(csv[head])):
-                    if math.isinf(float(csv[head][i])):
-                        csv[head][i] = 0
                 num_list1.append(list(csv[head]))
             res = []
             result = []
@@ -504,14 +478,16 @@ def quantile():
         except Exception:
             bad_request()
         response_dir = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(response_dir):
             os.makedirs(response_dir)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -528,10 +504,6 @@ def population_skewness():
             headers = csv.columns.values
             num_list1 = []
             for head in headers:
-                # delete outlier by impute zero
-                for i in range(len(csv[head])):
-                    if math.isinf(float(csv[head][i])):
-                        csv[head][i] = 0
                 num_list1.append(list(csv[head]))
             res = []
             result = []
@@ -543,14 +515,16 @@ def population_skewness():
         except Exception:
             bad_request()
         response_dir = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(response_dir):
             os.makedirs(response_dir)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -567,10 +541,6 @@ def kurtosis():
             headers = csv.columns.values
             num_list1 = []
             for head in headers:
-                # delete outlier by impute zero
-                for i in range(len(csv[head])):
-                    if math.isinf(float(csv[head][i])):
-                        csv[head][i] = 0
                 num_list1.append(list(csv[head]))
             res = []
             result = []
@@ -582,14 +552,16 @@ def kurtosis():
         except Exception:
             bad_request()
         response_dir = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(response_dir):
             os.makedirs(response_dir)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = response_dir + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -611,28 +583,22 @@ def pearson():
             num_list1 = list(csv[headers[0]])
             num_list2 = list(csv[headers[1]])
 
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(num_list1[i]):
-                    num_list1[i] = 0
-            for i in range(len(num_list2)):
-                if math.isinf(num_list2[i]):
-                    num_list2[i] = 0
-
             correlation, p_value = co.pearson_correlation(num_list1, num_list2)
             result = {"correlation": correlation, "p_value": p_value}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -650,28 +616,22 @@ def spearman_correlation():
             num_list1 = list(csv[headers[0]])
             num_list2 = list(csv[headers[1]])
 
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(num_list1[i]):
-                    num_list1[i] = 0
-            for i in range(len(num_list2)):
-                if math.isinf(num_list2[i]):
-                    num_list2[i] = 0
-
             correlation, p_value = co.spearman_correlation(num_list1, num_list2)
             result = {"correlation": correlation, "p_value": p_value}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -689,28 +649,22 @@ def kendalltau_correlation():
             num_list1 = list(csv[headers[0]])
             num_list2 = list(csv[headers[1]])
 
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(num_list1[i]):
-                    num_list1[i] = 0
-            for i in range(len(num_list2)):
-                if math.isinf(num_list2[i]):
-                    num_list2[i] = 0
-
             correlation, p_value = co.kendalltau_correlation(num_list1, num_list2)
             result = {"correlation": correlation, "p_value": p_value}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -728,28 +682,22 @@ def cramers_v():
             num_list1 = list(csv[headers[0]])
             num_list2 = list(csv[headers[1]])
 
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(num_list1[i]):
-                    num_list1[i] = 0
-            for i in range(len(num_list2)):
-                if math.isinf(num_list2[i]):
-                    num_list2[i] = 0
-
             correlation = co.cramers_v(num_list1, num_list2)
             result = {"correlation": correlation}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -767,28 +715,22 @@ def tavafoghi():
             num_list1 = list(csv[headers[0]])
             num_list2 = list(csv[headers[1]])
 
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(num_list1[i]):
-                    num_list1[i] = 0
-            for i in range(len(num_list2)):
-                if math.isinf(num_list2[i]):
-                    num_list2[i] = 0
-
             correlation = co.tavafoghi(num_list1, num_list2)
             result = {"correlation": correlation}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -806,28 +748,22 @@ def somersd():
             num_list1 = list(csv[headers[0]])
             num_list2 = list(csv[headers[1]])
 
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(num_list1[i]):
-                    num_list1[i] = 0
-            for i in range(len(num_list2)):
-                if math.isinf(num_list2[i]):
-                    num_list2[i] = 0
-
             correlation = co.somersd(num_list1, num_list2)
             result = {"correlation": correlation}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -845,28 +781,22 @@ def anova_eta_omg():
             num_list1 = list(csv[headers[0]])
             num_list2 = list(csv[headers[1]])
 
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(num_list1[i]):
-                    num_list1[i] = 0
-            for i in range(len(num_list2)):
-                if math.isinf(num_list2[i]):
-                    num_list2[i] = 0
-
             eta, omg = co.anova_eta_omg(num_list1, num_list2)
             result = {"eta": eta, "omg": omg}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -891,14 +821,16 @@ def structural_equation_modeling():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path
+            'result_file': response_complete_url,
         }
         resp = jsonify(data)
         return resp
@@ -915,28 +847,22 @@ def cronbachalpha():
             num_list1 = list(csv[headers[0]])
             num_list2 = list(csv[headers[1]])
 
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(num_list1[i]):
-                    num_list1[i] = 0
-            for i in range(len(num_list2)):
-                if math.isinf(num_list2[i]):
-                    num_list2[i] = 0
-
             cronbachalpha = co.payaii(num_list1, num_list2)
             result = {"correlation": cronbachalpha}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -954,28 +880,22 @@ def point_biserial():
             num_list1 = list(csv[headers[0]])
             num_list2 = list(csv[headers[1]])
 
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(num_list1[i]):
-                    num_list1[i] = 0
-            for i in range(len(num_list2)):
-                if math.isinf(num_list2[i]):
-                    num_list2[i] = 0
-
             rval, pval = co.point_biserial(num_list1, num_list2)
             result = {"rval": rval, "pval": pval}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -994,26 +914,22 @@ def get_matrix_point_biserial():
             for l in headers:
                 lists.append(csv[l])
 
-            # delete outlier by impute zero
-            for l in lists:
-                for i in range(len(l)):
-                    if math.isinf(l[i]):
-                        l[i] = 0
-
             mpbiserial = co.get_matrix_point_biserial(*lists)
-            result = {"mpbiserial": mpbiserial}
+            result = mpbiserial
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -1035,28 +951,22 @@ def biserial():
             num_list1 = list(csv[headers[0]])
             num_list2 = list(csv[headers[1]])
 
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(num_list1[i]):
-                    num_list1[i] = 0
-            for i in range(len(num_list2)):
-                if math.isinf(num_list2[i]):
-                    num_list2[i] = 0
-
             bserial = co.biserial(num_list1, num_list2, p1, p2, y)
             result = {"bserial": bserial}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -1079,26 +989,22 @@ def get_matrix_biserial():
             for l in headers:
                 lists.append(csv[l])
 
-            # delete outlier by impute zero
-            for l in lists:
-                for i in range(len(l)):
-                    if math.isinf(l[i]):
-                        l[i] = 0
-
             mpbiserial = co.get_matrix_biserial(p1, p2, y, *lists)
-            result = {"mbiserial": mpbiserial}
+            result = mpbiserial
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -1120,23 +1026,25 @@ def get_kol_sum():
                 w = None
 
             result = co.get_nomre_kol_sum(data, w)
-            result = {"result": result}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
         return resp
+
 
 @app.route("/api/v1/coefficient/point_mean", methods=['POST'])
 def get_kol_mean():
@@ -1153,23 +1061,26 @@ def get_kol_mean():
                 w = None
 
             result = co.get_nomre_kol_mean(data, w)
-            result = {"result": result}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
         return resp
+
+
 # </editor-fold>
 
 # <editor-fold desc="tests">
@@ -1184,10 +1095,6 @@ def chisquare_test():
             headers = csv.columns.values
             num_list1 = []
             for head in headers:
-                # delete outlier by impute zero
-                for i in range(len(csv[head])):
-                    if math.isinf(float(csv[head][i])):
-                        csv[head][i] = 0
                 num_list1.append(list(csv[head]))
             res = []
             result = []
@@ -1202,14 +1109,16 @@ def chisquare_test():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -1227,14 +1136,6 @@ def t():
             num_list1 = list(csv[headers[0]])
             num_list2 = list(csv[headers[1]])
 
-            # delete outlier by impute zero
-            for i in range(len(num_list1)):
-                if math.isinf(num_list1[i]):
-                    num_list1[i] = 0
-            for i in range(len(num_list2)):
-                if math.isinf(num_list2[i]):
-                    num_list2[i] = 0
-
             t, pval = stt.t_test(num_list1, num_list2)
             result = {"t": t, "pval": pval}
 
@@ -1242,14 +1143,16 @@ def t():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -1268,26 +1171,22 @@ def anova():
             for l in headers:
                 lists.append(csv[l])
 
-            # delete outlier by impute zero
-            for l in lists:
-                for i in range(len(l)):
-                    if math.isinf(l[i]):
-                        l[i] = 0
-
             fval, pval = stt.anova(*lists)
             result = {"fval": fval, "pval": pval}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -1306,26 +1205,22 @@ def kruskal():
             for l in headers:
                 lists.append(csv[l])
 
-            # delete outlier by impute zero
-            for l in lists:
-                for i in range(len(l)):
-                    if math.isinf(l[i]):
-                        l[i] = 0
-
             krusk, pval = stt.kruskal_test(*lists)
             result = {"krusk": krusk, "pval": pval}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -1344,26 +1239,22 @@ def mannwhitney_test():
             for l in headers:
                 lists.append(csv[l])
 
-            # delete outlier by impute zero
-            for l in lists:
-                for i in range(len(l)):
-                    if math.isinf(l[i]):
-                        l[i] = 0
-
             manwhit, pval = stt.mannwhitney_test(*lists)
             result = {"manwhit": manwhit, "pval": pval}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -1382,26 +1273,22 @@ def mediantest():
             for l in headers:
                 lists.append(csv[l])
 
-            # delete outlier by impute zero
-            for l in lists:
-                for i in range(len(l)):
-                    if math.isinf(l[i]):
-                        l[i] = 0
-
             median, pval, m, table = stt.median_test(*lists)
             result = {"median": median, "pval": pval}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -1418,10 +1305,6 @@ def normalt():
             headers = csv.columns.values
             num_list1 = []
             for head in headers:
-                # delete outlier by impute zero
-                for i in range(len(csv[head])):
-                    if math.isinf(float(csv[head][i])):
-                        csv[head][i] = 0
                 num_list1.append(list(csv[head]))
             res = []
             result = []
@@ -1436,14 +1319,16 @@ def normalt():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -1463,14 +1348,16 @@ def korvit():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -1490,26 +1377,22 @@ def kmo():
             for l in headers:
                 lists.append(csv[l])
 
-            # delete outlier by impute zero
-            for l in lists:
-                for i in range(len(l)):
-                    if math.isinf(l[i]):
-                        l[i] = 0
-
             kmo_all, kmo_model = stt.kmo(csv)
             result = {"kmo": kmo_model}
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -1529,12 +1412,6 @@ def exploratory_factor_analyzer():
             for l in headers:
                 lists.append(csv[l])
 
-            # delete outlier by impute zero
-            for l in lists:
-                for i in range(len(l)):
-                    if math.isinf(l[i]):
-                        l[i] = 0
-
             loadings, communalities = stt.exploratory_factor_analyzer(csv)
             loads = []
             for row in loadings:
@@ -1547,14 +1424,16 @@ def exploratory_factor_analyzer():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -1574,12 +1453,6 @@ def confirmatory_factor_analyzer():
             for l in headers:
                 lists.append(csv[l])
 
-            # delete outlier by impute zero
-            for l in lists:
-                for i in range(len(l)):
-                    if math.isinf(l[i]):
-                        l[i] = 0
-
             loadings, varcovs, trans = stt.confirmatory_factor_analyzer(csv)
 
             varcovs = np.array(varcovs).flatten()
@@ -1591,14 +1464,16 @@ def confirmatory_factor_analyzer():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
+            'result_file': response_complete_url,
             'results': result
         }
         resp = jsonify(data)
@@ -1622,15 +1497,17 @@ def pearson_test():
         except Exception:
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
-            'result': result
+            'result_file': response_complete_url,
+            'results': result
         }
         resp = jsonify(data)
         return resp
@@ -1653,15 +1530,17 @@ def spearman_test():
         except Exception:
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
-            'result': result
+            'result_file': response_complete_url,
+            'results': result
         }
         resp = jsonify(data)
         return resp
@@ -1684,15 +1563,17 @@ def kendalltau_test():
         except Exception:
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
-            'result': result
+            'result_file': response_complete_url,
+            'results': result
         }
         resp = jsonify(data)
         return resp
@@ -1715,15 +1596,17 @@ def cramersv_test():
         except Exception:
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
-            'result': result
+            'result_file': response_complete_url,
+            'results': result
         }
         resp = jsonify(data)
         return resp
@@ -1746,15 +1629,17 @@ def somersd_test():
         except Exception:
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
-            'result': result
+            'result_file': response_complete_url,
+            'results': result
         }
         resp = jsonify(data)
         return resp
@@ -1777,15 +1662,17 @@ def tavafoghi_test():
         except Exception:
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
-            'result': result
+            'result_file': response_complete_url,
+            'results': result
         }
         resp = jsonify(data)
         return resp
@@ -1812,15 +1699,17 @@ def random_test():
         except Exception:
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path,
-            'result': result
+            'result_file': response_complete_url,
+            'results': result
         }
         resp = jsonify(data)
         return resp
@@ -1841,20 +1730,22 @@ def kmeans():
 
             labels, centroids = cls.kmeans(csv, ncluster)
 
-            result = {"labels": labels,"centroids":centroids}
+            result = {"labels": labels, "centroids": centroids}
 
         except Exception:
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path
+            'result_file': response_complete_url,
         }
         resp = jsonify(data)
         return resp
@@ -1877,14 +1768,16 @@ def dbscan():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path
+            'result_file': response_complete_url,
         }
         resp = jsonify(data)
         return resp
@@ -1907,12 +1800,6 @@ def kmode():
             for l in headers:
                 lists.append(csv[l])
 
-            # delete outlier by impute zero
-            for l in lists:
-                for i in range(len(l)):
-                    if math.isinf(l[i]):
-                        l[i] = 0
-
             labels = cls.kmode(lists[1], 4, 5, 1)
             labels = np.array(labels).T.tolist()
             result = {"labels": labels}
@@ -1921,14 +1808,16 @@ def kmode():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path
+            'result_file': response_complete_url,
         }
         resp = jsonify(data)
         return resp
@@ -1954,14 +1843,16 @@ def knn():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path
+            'result_file': response_complete_url,
         }
         resp = jsonify(data)
         return resp
@@ -1981,14 +1872,16 @@ def regression_imputation():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path
+            'result_file': response_complete_url,
         }
         resp = jsonify(data)
         return resp
@@ -2008,14 +1901,16 @@ def fard_imputation():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path
+            'result_file': response_complete_url,
         }
         resp = jsonify(data)
         return resp
@@ -2035,14 +1930,16 @@ def porsesh_imputation():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path
+            'result_file': response_complete_url,
         }
         resp = jsonify(data)
         return resp
@@ -2062,14 +1959,16 @@ def hambaste_imputation():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path
+            'result_file': response_complete_url,
         }
         resp = jsonify(data)
         return resp
@@ -2089,14 +1988,16 @@ def corrected_imputation():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path
+            'result_file': response_complete_url,
         }
         resp = jsonify(data)
         return resp
@@ -2135,14 +2036,16 @@ def random():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path
+            'result_file': response_complete_url,
         }
         resp = jsonify(data)
         return resp
@@ -2176,14 +2079,16 @@ def frequency_impute():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path
+            'result_file': response_complete_url,
         }
         resp = jsonify(data)
         return resp
@@ -2215,17 +2120,20 @@ def mean_impute():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path
+            'result_file': response_complete_url,
         }
         resp = jsonify(data)
         return resp
+
 
 # </editor-fold>
 
@@ -2246,17 +2154,21 @@ def isofarest():
             # result = {"error": "bad param or no param"}
             bad_request()
         directory = current_path + '/dmtm_responses'
+        response_url = dmtm_url + '/dmtm_responses'
         if not os.path.exists(directory):
             os.makedirs(directory)
         current_milli_time = lambda: int(round(time.time() * 1000))
         res_path = directory + '/' + str(current_milli_time()) + '.json'
+        response_complete_url = response_url + '/' + str(current_milli_time()) + '.json'
         with open(res_path, 'w') as outfile:
             json.dump(result, outfile)
         data = {
-            'result_file': res_path
+            'result_file': response_complete_url,
         }
         resp = jsonify(data)
         return resp
+
+
 # </editor-fold>
 
 

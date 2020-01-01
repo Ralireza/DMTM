@@ -170,6 +170,4 @@ def get_nomre_kol_mean(matrix, weights=None):
     return final_list
 
 #
-# csv = pd.read_csv("/Users/alireza/project/DMTM/flask/files/sample6.csv")
-# a = get_nomre_kol_mean(csv)
-# print(a)
+#

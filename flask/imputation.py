@@ -178,7 +178,7 @@ def hambaste_impute(number_list):
                 if math.isnan(one):
                     empty_position.append([col,ind])
 
-    # find most correlated col TODO just for one empty
+    # find most correlated col
     col_to_compare_with = [x for x in list(number_list.columns.values) if x not in empty_position[0]]
     result_corr = []
     for non_value in (empty_position):
@@ -187,7 +187,7 @@ def hambaste_impute(number_list):
         for cmp in col_to_compare_with:
             correlation, p = ss.pearsonr(deleted_empty_rows[col], deleted_empty_rows[cmp])
             result_corr.append([col, cmp, math.fabs(correlation)])
-
+        # TODO go to next max correlated if mean mean of current most_corr is NAN
         indx, value = max(enumerate(map(itemgetter(-1), result_corr)), key=itemgetter(1))
         most_corr_col = result_corr[indx][1]
         neighbour_in_corr_col = number_list[most_corr_col][empty_row]
@@ -227,7 +227,3 @@ def hambaste_impute(number_list):
 
 
 
-
-# csv = pd.read_csv("/Users/alireza/project/DMTM/flask/files/sample6.csv")
-# a = hambaste_impute(csv)
-# print(a)

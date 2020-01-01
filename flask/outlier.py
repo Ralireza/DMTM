@@ -5,8 +5,8 @@ import pandas as pd
 import pyreadstat
 from sklearn.model_selection import train_test_split
 
-
-def iso_farest(test_data, max_samples):
+#TODO 100 ekhtiari
+def iso_farest(test_data, max_samples=100):
     df, meta = pyreadstat.read_sav("/Users/alireza/project/DMTM/flask/er0827t.sav")
     for column in df:
         if df[column].isnull().values.all():
@@ -54,6 +54,3 @@ def iso_farest(test_data, max_samples):
     return y_pred_test
 
 
-# csv = pd.read_csv("/Users/alireza/project/DMTM/flask/files/sample3.csv")
-# labels = iso_farest(csv, 3)
-# print(labels)

@@ -32,6 +32,3 @@ def kmode(data, ncluster, n_init, verbose):
     clusters = km.fit_predict(data)
     return clusters
 
-# csv = pd.read_csv("/Users/alireza/project/DMTM/flask/files/sample3.csv")
-# label=dbscan(csv,3,2)
-# label=dbscan(csv,3,2)
